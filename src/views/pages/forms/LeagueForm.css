@@ -1,0 +1,13 @@
+.league-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two fields per row */
+    gap: 20px; /* Space between items */
+    align-items: center;
+}
+
+.form-actions {
+    grid-column: span 2; /* Actions span both columns */
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
