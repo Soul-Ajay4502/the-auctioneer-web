@@ -52,7 +52,7 @@ function ModalWrapper({
                             color: "#000", // Customize text color
                             textTransform: "uppercase", // Uppercase text
                             letterSpacing: "0.5px", // Customize letter spacing
-                            borderBottom: "4px solid #000",
+                            // borderBottom: "4px solid #000",
                             background: "#fff",
                             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                         }}

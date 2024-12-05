@@ -60,8 +60,9 @@ function GenerateRoutes() {
 
 function ProtectedRoute({ children }) {
     const { user } = useAuthenticationState();
+    console.log("user", user);
 
-    if (!user?.user_id) {
+    if (!user?.userId) {
         return <Navigate to="/login" replace />;
     }
     return children;

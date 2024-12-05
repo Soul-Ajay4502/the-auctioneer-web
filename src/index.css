@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #000;
+}
+label {
+  margin-bottom: 0.5rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #000;
+}
+
+.form-control {
+  border: 1px solid #64646b !important;
+  border-radius: 5px !important;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}

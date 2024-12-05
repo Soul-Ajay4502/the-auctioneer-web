@@ -20,6 +20,8 @@
     transition: background-color 0.3s, color 0.3s;
     font-weight: 700;
     background: #fff;
+    min-width: 120px;
+    text-align: center;
 }
 
 /* Active tab styling */

@@ -4,6 +4,8 @@ import endpoints from "../../services/endpoints";
 import viewProps from "../viewprops";
 import { ReactComponent as Player } from "../../assets/icons/player.svg";
 import LeagueForm from "./forms/LeagueForm";
+import ModalWrapper from "../../components/ModalWrapper";
+import { Button } from "react-bootstrap";
 
 function LeagueList() {
     const cellModifier = {
@@ -52,6 +54,32 @@ function LeagueList() {
                 </NavLink>
             );
         },
+        edit: ({ row, reFetch }) => {
+            return (
+                <ModalWrapper
+                    modalTitle={"UPDATE" + " " + row.leagueName}
+                    modalAttrs={{ size: "md" }}
+                    renderModalBody={(closeModal) => (
+                        <LeagueForm
+                            onAfterSubmit={() => {
+                                closeModal();
+                                reFetch();
+                            }}
+                            onCancel={closeModal}
+                            endpoint={endpoints.league.update}
+                            updateValues={row}
+                        />
+                    )}
+                >
+                    <Button
+                        className="primaryBtn btnAnime ms-4"
+                        style={{ fontSize: "13px" }}
+                    >
+                        {"UPDATE"}
+                    </Button>
+                </ModalWrapper>
+            );
+        },
     };
 
     return (
@@ -62,6 +90,7 @@ function LeagueList() {
                     {...viewProps.leagueDetails}
                     cellModifier={cellModifier}
                     Form={LeagueForm}
+                    endpoints={endpoints.league}
                 />
             </div>
         </>

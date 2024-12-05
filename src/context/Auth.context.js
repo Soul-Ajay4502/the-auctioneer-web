@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import React, {
     createContext,
     useContext,
@@ -6,10 +6,10 @@ import React, {
     useMemo,
     useEffect,
     useCallback,
-} from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import endpoints from '../services/endpoints';
-import Loader from '../components/Loader';
+} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import endpoints from "../services/endpoints";
+import Loader from "../components/Loader";
 
 const AuthenticationContext = createContext();
 
@@ -22,27 +22,26 @@ const AuthenticationProvider = (props) => {
 
     const navigate = useNavigate();
 
-    const unrestrcitedRoutes = ['/login', '/terms', '/privacy-policy'];
+    const unrestrcitedRoutes = ["/login", "/terms", "/privacy-policy"];
 
     const takeToLogin = () => {
         if (!unrestrcitedRoutes.includes(location.pathname)) {
-            navigate('/login', 'replace');
+            navigate("/login", "replace");
         }
     };
 
     useEffect(() => {
-        let body = { refreshToken: localStorage.getItem('refreshToken') };
+        let body = { refreshToken: localStorage.getItem("refreshToken") };
 
         // Interceptor
         // axios.defaults.baseURL = 'https://api.kobleapp.in/api';
         // axios.defaults.baseURL = 'https://preprodapi.kobleapp.in/api';
         // axios.defaults.baseURL = 'http://134.209.157.187:5050/api'; //test server
         // axios.defaults.baseURL = 'http://20.40.50.105:5050/api'; //staging server
-        axios.defaults.baseURL = 'http://localhost:8090/api'; //local server
+        axios.defaults.baseURL = "http://localhost:8090/api"; //local server
         // axios.defaults.baseURL = 'https://sdapi.kobleapp.in:5050/api'; //Sales demo
         // axios.defaults.baseURL = 'http://192.168.1.41:5050/api';
         // axios.defaults.baseURL = 'https://devapi.kobleapp.in/api';
-
 
         const axiosId = axios.interceptors.response.use(
             (res) => {
@@ -56,17 +55,17 @@ const AuthenticationProvider = (props) => {
                         if (!originalRequest.retry) {
                             originalRequest.retry = true;
                             let refreshToken =
-                                localStorage.getItem('refreshToken');
+                                localStorage.getItem("refreshToken");
                             let body = { refreshToken: refreshToken };
 
                             return axios
                                 .post(endpoints.authentication.token, body)
                                 .then((response) => {
                                     axios.defaults.headers.common[
-                                        'Authorization'
+                                        "Authorization"
                                     ] = `Bearer ${response.data.token}`;
                                     originalRequest.headers[
-                                        'Authorization'
+                                        "Authorization"
                                     ] = `Bearer ${response.data.token}`;
                                     const user = {
                                         ...response.data.responseData,
@@ -97,7 +96,7 @@ const AuthenticationProvider = (props) => {
             .post(endpoints.authentication.token, body)
             .then((response) => {
                 axios.defaults.headers.common[
-                    'Authorization'
+                    "Authorization"
                 ] = `Bearer ${response.data.token}`;
 
                 const user = { ...response.data.responseData };
@@ -125,17 +124,16 @@ const AuthenticationProvider = (props) => {
         );
 
         axios.defaults.headers.common[
-            'Authorization'
+            "Authorization"
         ] = `Bearer ${response.data.token}`;
-
-        localStorage.setItem('refreshToken', response.data.refreshToken);
+        setUser(response.data.responseData);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
     }, []);
-
 
     const logout = useCallback(() => {
         setUser({});
         localStorage.clear();
-        navigate('login');
+        navigate("login");
     }, []);
 
     const value = useMemo(
@@ -155,12 +153,11 @@ const AuthenticationProvider = (props) => {
     );
 };
 
-
 const useAuthenticationState = () => {
     let context = useContext(AuthenticationContext);
     if (context === undefined)
         throw new Error(
-            'useAuthenticationState must be used within a AuthenticationProvider'
+            "useAuthenticationState must be used within a AuthenticationProvider"
         );
     return context;
 };

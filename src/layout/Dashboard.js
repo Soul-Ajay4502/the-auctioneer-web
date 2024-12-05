@@ -73,7 +73,7 @@ const Dashboard = (props) => {
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            paddingRight: 10,
+                            paddingRight: 50,
                         }}
                     >
                         <DashBoardMenus {...props} />
@@ -93,7 +93,7 @@ const Dashboard = (props) => {
                                     paddingLeft: 2,
                                 }}
                             >
-                                {user.display_name?.toUpperCase()}
+                                {user.displayName?.toUpperCase()}
                             </div>
                         </div>
                     </div>

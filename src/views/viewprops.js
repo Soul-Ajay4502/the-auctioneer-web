@@ -11,7 +11,9 @@ const viewProps = Object.freeze({
             "LEAGUE START DATE",
             "LEAGUE END DATE",
             "REGISTRATION ENDS ON",
+            "HAS UNSOLD",
             "PLAYERS IN LEAGUE",
+            "EDIT",
         ],
         relevants: [
             "leagueName",
@@ -23,7 +25,9 @@ const viewProps = Object.freeze({
             "leagueStartDate",
             "leagueEndDate",
             "registrationEndDate",
+            "hasUnsold",
             "playerList",
+            "edit",
         ],
     },
 });
