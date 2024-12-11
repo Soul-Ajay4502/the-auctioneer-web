@@ -12,6 +12,7 @@ import CreatableSelect from "./CreatableSelect";
 // import PhoneNumberInput from "./PhoneNumberInput";
 import SelectWithFixedOptions from "./SelectWithFixedOptions";
 import PaginatedSelect from "./PaginatedSelect";
+import ImageInput from "./ImageInput";
 
 function FormikControl({ control, children, viewProp, ...rest }) {
     const { labelMap } = {};
@@ -29,16 +30,16 @@ function FormikControl({ control, children, viewProp, ...rest }) {
                     labelMap={labelMap}
                 />
             );
-        // case "phone-number":
-        //     return (
-        //         <PhoneNumberInput
-        //             fontSize={fontSize}
-        //             {...rest}
-        //             ErrorFeedback={ErrorFeedback}
-        //             validityClass={validityClass}
-        //             labelMap={labelMap}
-        //         />
-        //     );
+        case "image":
+            return (
+                <ImageInput
+                    fontSize={fontSize}
+                    {...rest}
+                    ErrorFeedback={ErrorFeedback}
+                    validityClass={validityClass}
+                    labelMap={labelMap}
+                />
+            );
         case "textarea":
             return (
                 <Textarea

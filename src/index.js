@@ -6,13 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import GenerateRoutes from './routing/GenerateRoutes';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthenticationProvider } from './context/Auth.context';
+import { LeagueStateProvider } from './context/League.context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
       <AuthenticationProvider>
-        <GenerateRoutes />
+        <LeagueStateProvider>
+          <GenerateRoutes />
+        </LeagueStateProvider>
       </AuthenticationProvider>
     </Router>
   </React.StrictMode>

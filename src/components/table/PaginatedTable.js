@@ -11,6 +11,8 @@ import { ReactComponent as Prev } from "../../assets/icons/chevron-left.svg";
 import { ReactComponent as Next } from "../../assets/icons/chevron-right.svg";
 import { ReactComponent as PrevDouble } from "../../assets/icons/chevron-double-left.svg";
 import { ReactComponent as NextDouble } from "../../assets/icons/chevron-double-right.svg";
+import BulkUpload from "../BulkUserUpload";
+import endpointsForDownload from "../../services/endpoints";
 
 const PaginatedTable = (props) => {
     const {
@@ -23,10 +25,11 @@ const PaginatedTable = (props) => {
         insertable = true,
         cellModifier = {},
         addFormProps = {},
-        reFetch = () => {},
+        reFetch = () => { },
         addBtnLabel = "",
         headerExtras = <></>,
         pinnedFieldRelevant = "leagueName",
+        isUploadEnable = false
     } = props;
 
     const [paginate, setPagination] = useState({});
@@ -57,10 +60,10 @@ const PaginatedTable = (props) => {
                 // Pass the entire row data to the cellModifier function if it exists
                 return cellModifier[field]
                     ? cellModifier[field]({
-                          value: params.value,
-                          row: params.data,
-                          reFetch: fetchData,
-                      })
+                        value: params.value,
+                        row: params.data,
+                        reFetch: fetchData,
+                    })
                     : params.value;
             },
         }));
@@ -73,12 +76,12 @@ const PaginatedTable = (props) => {
             const response = await axios.get(getDataUrl, {
                 params: { page, limit: recordsPerPage },
             });
-            const { data } = response.data.responseData;
+            const { data } = response?.data?.responseData;
             setRowData(data);
-            setPagination(response.data.responseData.pagination);
+            setPagination(response?.data?.responseData?.pagination);
         } catch (error) {
             console.error("Error fetching data:", error);
-            toast.error("Failed to fetch data!");
+            // toast.error("Failed to fetch data!");
         } finally {
             setLoading(false);
         }
@@ -108,7 +111,7 @@ const PaginatedTable = (props) => {
         setCurrentPage(paginate.totalPages);
     };
 
-    let errorMessage = !loading && rowData.length === 0 ? "Table is Empty" : "";
+    let errorMessage = !loading && rowData.length === 0 ? `List is Empty` : "";
 
     return (
         <div className="crudCard">
@@ -120,8 +123,9 @@ const PaginatedTable = (props) => {
                         fontWeight: 700,
                     }}
                 >
-                    {name?.toUpperCase()}
+                    {typeof name === 'string' ? name.toUpperCase() : name}
                 </span>
+                {isUploadEnable && <BulkUpload afterUpload={() => fetchData()} templateUrl={endpointsForDownload.playerList.downloadUploadTemplate} />}
 
                 {insertable && (
                     <ModalWrapper
@@ -143,7 +147,7 @@ const PaginatedTable = (props) => {
                             className="primaryBtn btnAnime ms-4"
                             style={{ fontSize: "13px" }}
                         >
-                            {addBtnLabel || "Add " + name}
+                            {addBtnLabel.toUpperCase() || "Add " + name}
                         </Button>
                     </ModalWrapper>
                 )}
@@ -159,7 +163,7 @@ const PaginatedTable = (props) => {
                 ) : (
                     <div
                         className="ag-theme-alpine"
-                        style={{ height: "490px", width: "100%" }}
+                        style={{ height: "486px", width: "100%" }}
                     >
                         <AgGridReact
                             rowData={rowData}
@@ -170,18 +174,22 @@ const PaginatedTable = (props) => {
                     </div>
                 )}
             </div>
-            <div
+            {rowData.length > 0 && <div
                 style={{
                     width: "100%",
                     display: "flex",
                     justifyContent: "right",
                     paddingRight: 20,
                     background: "#fff",
-                    border: "1px solid #000",
+                    border: "1px solid #c7c8c9",
+                    marginTop: 15,
+                    // borderRadius: 20,
+                    // boxShadow: '5px 5px 15px grey',
+                    backgroundColor: '#e4e6eb'
                 }}
             >
                 <div
-                    className="d-flex justify-content-between align-items-center py-3"
+                    className="d-flex justify-content-between align-items-center py-2"
                     style={{ width: 500 }}
                 >
                     <PrevDouble
@@ -239,7 +247,7 @@ const PaginatedTable = (props) => {
                         }
                     />
                 </div>
-            </div>
+            </div>}
             {loading && <Loader />}
         </div>
     );

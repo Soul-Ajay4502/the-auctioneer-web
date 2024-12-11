@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import "./DashBoardMenus.css"; // Import custom styles for tabs
+import { ReactComponent as Home } from "../assets/icons/Home.svg";
 
-const DashBoardMenus = ({ routes }) => {
+
+const LeagueMenus = ({ routes }) => {
     return (
         <div className="tabs-container">
             <div
@@ -15,7 +17,7 @@ const DashBoardMenus = ({ routes }) => {
                 }}
             >
                 {routes
-                    .filter((route) => route.showOnTab && !route.notShowOnMenu)
+                    .filter((route) => !route.showOnTab && !route.notShowOnMenu)
                     .map((route) => (
                         <NavLink
                             key={route.path}
@@ -28,8 +30,22 @@ const DashBoardMenus = ({ routes }) => {
                         </NavLink>
                     ))}
             </div>
+            <div className="home-tab"
+                style={{
+                    borderRadius: 50,
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)", // Adds a subtle shadow
+                    border: "2px solid #fff",
+                    paddingBottom: 5
+                }}
+            >
+                <NavLink
+                    to='/league-list'
+                >
+                    <Home style={{ color: '#000' }} />
+                </NavLink>
+            </div>
         </div>
     );
 };
 
-export default DashBoardMenus;
+export default LeagueMenus;

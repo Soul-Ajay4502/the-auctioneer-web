@@ -8,6 +8,18 @@ const endpoints = Object.freeze({
         add: "/league/add",
         update: "/league/update",
     },
+    team: {
+        list: "/team/",
+        add: "/team/add",
+        update: "/team/update",
+    },
+    playerList: {
+        list: "/players/",
+        add: "/team/add",
+        update: "/team/update",
+        downloadUploadTemplate: '/template/download',
+        upload: '/template/upload',
+    },
 });
 
 export default endpoints;

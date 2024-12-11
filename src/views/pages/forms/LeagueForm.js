@@ -11,7 +11,7 @@ import "./LeagueForm.css"; // Import any additional CSS
 
 function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
     const submitHandler = (values, { setSubmitting }) => {
-        const body = { ...values, leagueId: updateValues.leagueId };
+        const body = { ...values, leagueId: updateValues?.leagueId };
         axios
             .post(endpoint, body)
             .then(() => {

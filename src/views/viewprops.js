@@ -2,7 +2,7 @@ const viewProps = Object.freeze({
     leagueDetails: {
         name: "leagues", // Update the name as needed
         columnHeads: [
-            "LEAGUE SHORT NAME",
+            "ENTER TO LEAGUE",
             "LEAGUE FULL NAME",
             "LOCATIONS IN LEAGUE",
             "TOTAL PLAYERS IN LEAGUE",
@@ -12,7 +12,6 @@ const viewProps = Object.freeze({
             "LEAGUE END DATE",
             "REGISTRATION ENDS ON",
             "HAS UNSOLD",
-            "PLAYERS IN LEAGUE",
             "EDIT",
         ],
         relevants: [
@@ -26,9 +25,61 @@ const viewProps = Object.freeze({
             "leagueEndDate",
             "registrationEndDate",
             "hasUnsold",
-            "playerList",
             "edit",
         ],
+    },
+    teamDetails: {
+        name: "Teams", // Update the name as needed
+        columnHeads: [
+            "TEAM NAME",
+            "LOGO",
+            "TEAM OWNER",
+            "TEAM OWNER PHONE",
+            "JERSEY COLOR",
+            "TEAM MEMBERS",
+            "EDIT",
+        ],
+        relevants: [
+            "teamName",
+            "logoUrl",
+            "teamOwner",
+            "teamOwnerPhone",
+            "jerseyColor",
+            "members",
+            "edit"
+
+        ],
+    },
+    players: {
+        name: "Player List", // Update the name as needed
+        columnHeads: [
+            "PLAYER NAME",
+            "PLAYER PHOTO",
+            "WHATSAPP NO",
+            "PLACE",
+            "CURRENT TEAM",
+            "PLAYER ROLE",
+            "BATTING STYLE",
+            "BOWLING STYLE",
+            "PAYMENT SCREENSHOT",
+            "ID PROOF",
+            "REGISTRATION TIME",
+        ]
+        ,
+        relevants: [
+            "playerName",
+            "playerPhoto",
+            "whatsappNo",
+            "place",
+            "currentTeam",
+            "playerRole",
+            "battingStyle",
+            "bowlingStyle",
+            "paymentScreenshot",
+            "idProofUrl",
+            "registrationTime",
+        ]
+        ,
     },
 });
 

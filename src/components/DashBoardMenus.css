@@ -35,3 +35,16 @@
     background-color: #e0e7ff;
     color: #5280e3;
 }
+
+.home-tab{
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: 700;
+    background: #fff;
+    min-width: 30px;
+    text-align: center;
+    /* padding: 10px 15px; */
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

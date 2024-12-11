@@ -6,6 +6,7 @@ import DashBoardMenus from "../components/DashBoardMenus.js";
 
 import { setLocale } from "yup";
 import { useAuthenticationState } from "../context/Auth.context.js";
+import LeagueMenus from "../components/LeagueMenus.js";
 // import Loader from "../components/Loader.js";
 
 const Dashboard = (props) => {
@@ -66,38 +67,38 @@ const Dashboard = (props) => {
                     width: "100%",
                 }}
             >
-                {isTabVisible && (
+
+                <div
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingRight: 50,
+                    }}
+                >
+                    {isTabVisible ? (<DashBoardMenus {...props} />) : <LeagueMenus {...props} />}
                     <div
                         style={{
-                            width: "100%",
+                            padding: 4,
+                            fontWeight: 700,
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            paddingRight: 50,
                         }}
                     >
-                        <DashBoardMenus {...props} />
+                        WELCOME{" "}
                         <div
                             style={{
-                                padding: 4,
-                                fontWeight: 700,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                                color: "#2d50fc",
+                                paddingLeft: 2,
                             }}
                         >
-                            WELCOME{" "}
-                            <div
-                                style={{
-                                    color: "#2d50fc",
-                                    paddingLeft: 2,
-                                }}
-                            >
-                                {user.displayName?.toUpperCase()}
-                            </div>
+                            {user.displayName?.toUpperCase()}
                         </div>
                     </div>
-                )}
+                </div>
+
             </div>
             <div
                 style={{
@@ -119,7 +120,7 @@ const Dashboard = (props) => {
                     <Outlet />
                 </div>
 
-                <footer className="py-4" />
+                {/* <footer className="py-4" /> */}
             </div>
         </>
     );

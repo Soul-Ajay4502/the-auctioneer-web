@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CloseButton, Modal } from "react-bootstrap";
 
-function ModalWrapper({
+function ShowDpModal({
     renderModalBody = () => { },
     onHiding = () => { },
     modalTitle,
@@ -71,7 +71,7 @@ function ModalWrapper({
                         }}
                     />
                 </div>
-                <Modal.Body className="p-3 p-md-4">
+                <Modal.Body className="p-3 p-md-4" style={{ background: '#c37cf2' }}>
                     {renderModalBody(closeModal)}
                 </Modal.Body>
                 {showFooter && (
@@ -99,4 +99,4 @@ function ModalWrapper({
     );
 }
 
-export default ModalWrapper;
+export default ShowDpModal;

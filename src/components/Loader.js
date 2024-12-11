@@ -1,35 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
-import { createPortal } from 'react-dom';
+import React, { useEffect, useState } from 'react'
+import { ProgressBar, Spinner } from 'react-bootstrap'
+import { createPortal } from 'react-dom'
 
-function Loader() {
-    const [el] = useState(document.createElement('div'));
+
+function Loader({ type, progress, description = "Don't go back or refresh while uploading" }) {
+
+    const [el] = useState(document.createElement('div'))
 
     useEffect(() => {
-        document.body.appendChild(el);
+        document.body.appendChild(el)
         return () => {
-            document.body.removeChild(el);
-        };
-    }, [el]);
+            document.body.removeChild(el)
+        }
+    }, [el])
 
     return (
         <>
             {createPortal(
                 <div
                     style={{
-                        position: 'absolute',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                        top: '0%',
+                        left: '0%',
                         zIndex: '10011',
                     }}
+                    className={`
+                        position-absolute w-100 h-100 d-flex 
+                        justify-content-center align-items-center 
+                        bg-dark bg-opacity-25`
+                    }
                 >
-                    <Spinner animation="border" />
+                    {type === 'progress' ? (
+                        <div className='bg- rounded-smooth bg-light shadow-lg p-4 w-25'>
+                            <ProgressBar
+                                animated
+                                now={progress}
+                                min={0}
+                                max={100}
+                                variant="info"
+                            // label={progress + ' %'}
+                            />
+                            <div className='text-center text-muted small mt-2'>
+                                <p className='mb-1'>{progress}% completed</p>
+                                {description}
+                            </div>
+                        </div>
+                    ) : (
+                        <Spinner animation='border' />
+                    )}
                 </div>,
                 el
             )}
@@ -37,4 +54,4 @@ function Loader() {
     );
 }
 
-export default Loader;
+export default Loader

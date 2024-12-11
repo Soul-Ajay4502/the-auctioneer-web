@@ -2,12 +2,14 @@ import { NavLink } from "react-router-dom";
 import PaginatedTable from "../../components/table/PaginatedTable";
 import endpoints from "../../services/endpoints";
 import viewProps from "../viewprops";
-import { ReactComponent as Player } from "../../assets/icons/player.svg";
+import { ReactComponent as EnterToLeague } from "../../assets/icons/EnterToLeague.svg";
+import { ReactComponent as Edit } from "../../assets/icons/Edit.svg";
 import LeagueForm from "./forms/LeagueForm";
 import ModalWrapper from "../../components/ModalWrapper";
-import { Button } from "react-bootstrap";
+import { useLeagueState } from "../../context/League.context";
 
 function LeagueList() {
+    const { setSelectedLeague } = useLeagueState();
     const cellModifier = {
         leagueName: ({ value, row }) => {
             const colors = [
@@ -23,37 +25,63 @@ function LeagueList() {
             // Generate a unique index from the text value
             const colorIndex = value
                 ? value
-                      .split(/[-\s]/)
-                      .reduce((acc, char) => acc + char.charCodeAt(0), 0) %
-                  colors.length
+                    .split(/[-\s]/)
+                    .reduce((acc, char) => acc + char.charCodeAt(0), 0) %
+                colors.length
                 : 0;
 
             const backgroundColor = colors[colorIndex];
 
             return (
-                <div
-                    style={{
-                        background: backgroundColor,
-                        borderRadius: 10,
-                        textAlign: "center",
-                        fontWeight: 700,
-                    }}
-                >
-                    {value}
-                </div>
-            );
-        },
-        playerList: ({ row }) => {
-            return (
                 <NavLink
                     key={row.user_id}
                     to="/player-list"
-                    state={{ leagueDetails: row }}
+                    // state={{ leagueDetails: row }}
+                    style={{ textDecorationLine: 'none' }}
+                    onClick={() => setSelectedLeague({ leagueDetails: row })}
                 >
-                    <Player />
+                    <div
+                        style={{
+                            background: backgroundColor,
+                            borderRadius: 10,
+                            textAlign: "center",
+                            fontWeight: 700,
+                            display: 'flex',
+                            justifyContent: 'space-around',
+                            alignItems: "center",
+                            width: '100%',
+                            color: '#000',
+                        }}
+                    >
+                        <div>{value} </div><EnterToLeague />
+                    </div>
                 </NavLink>
             );
         },
+        // playerList: ({ row }) => {
+        //     return (
+        //         <NavLink
+        //             key={row.user_id}
+        //             to="/player-list"
+        //             state={{ leagueDetails: row }}
+        //         >
+        //             <div
+        //                 style={{
+        //                     height: "100%",
+        //                     width: "100%",
+        //                     background: "red",
+        //                     display: "flex",
+        //                     justifyContent: "center",
+        //                     alignItems: "center",
+        //                     borderRadius: 4,
+        //                     backgroundColor: 'grey'
+        //                 }}
+        //             >
+        //                 <EnterToLeague />
+        //             </div>
+        //         </NavLink>
+        //     );
+        // },
         edit: ({ row, reFetch }) => {
             return (
                 <ModalWrapper
@@ -71,12 +99,7 @@ function LeagueList() {
                         />
                     )}
                 >
-                    <Button
-                        className="primaryBtn btnAnime ms-4"
-                        style={{ fontSize: "13px" }}
-                    >
-                        {"UPDATE"}
-                    </Button>
+                    <Edit />
                 </ModalWrapper>
             );
         },
@@ -86,6 +109,7 @@ function LeagueList() {
         <>
             <div style={{ padding: 20 }}>
                 <PaginatedTable
+                    addBtnLabel='create league'
                     getDataUrl={endpoints.league.list}
                     {...viewProps.leagueDetails}
                     cellModifier={cellModifier}

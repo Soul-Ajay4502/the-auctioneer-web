@@ -33,3 +33,25 @@ label {
   border-radius: 5px !important;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
+::-webkit-scrollbar {
+  width:8px; /* Width of the scrollbar */
+  height: 10px; /* Height for horizontal scrollbars */
+}
+
+/* Track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Light gray background */
+  border-radius: 6px;
+}
+
+/* Thumb (scrollbar handle) */
+::-webkit-scrollbar-thumb {
+  background: #0d77e0; /* Gray handle */
+  border-radius: 6px;
+}
+
+/* Thumb hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: #55a4f2; /* Darker gray handle */
+}
