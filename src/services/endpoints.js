@@ -15,9 +15,9 @@ const endpoints = Object.freeze({
     },
     playerList: {
         list: "/players/",
-        add: "/team/add",
-        update: "/team/update",
-        downloadUploadTemplate: '/template/download',
+        add: "",
+        update: "/players/update",
+        downloadUploadTemplate: '',
         upload: '/template/upload',
     },
 });

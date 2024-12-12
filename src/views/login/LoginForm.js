@@ -107,7 +107,7 @@ const LoginForm = () => {
                 <button
                     type="submit"
                     style={{
-                        width: "100%",
+                        width: "97%",
                         padding: "10px",
                         backgroundColor: "#32529F",
                         color: "white",
@@ -115,6 +115,7 @@ const LoginForm = () => {
                         borderRadius: "4px",
                         fontSize: "16px",
                         cursor: "pointer",
+                        height: 50
                     }}
                 >
                     {loggingIn ? <Spinner animation="border" variant="light" /> : 'Login'}

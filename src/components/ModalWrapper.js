@@ -8,6 +8,7 @@ function ModalWrapper({
     modalAttrs,
     children,
     disabled,
+    disabledTitle,
     showFooter = false,
     showTitle = true
 }) {
@@ -22,7 +23,9 @@ function ModalWrapper({
             <div
                 type={`${disabled ? "" : "button"}`}
                 className="d-inline-block"
-                style={{ opacity: disabled ? ".5" : "1" }}
+                style={{ opacity: disabled ? ".5" : "1", cursor: disabled ? 'not-allowed' : 'pointer' }}
+                title={disabled ? disabledTitle : ''}
+
                 onClick={() => {
                     if (disabled) return;
                     setIsModalOpen(true);

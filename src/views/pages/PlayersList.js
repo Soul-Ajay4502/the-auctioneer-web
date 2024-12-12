@@ -7,6 +7,10 @@ import defaultAvatar from "../../assets/img/cricket.png";
 import ShowDpModal from "../../components/ShowDpModal";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg";
+import ModalWrapper from "../../components/ModalWrapper";
+import PlayerForm from "./forms/PlayerForm";
+import { ReactComponent as Edit } from "../../assets/icons/Edit.svg";
+
 
 
 function PlayerList() {
@@ -18,13 +22,13 @@ function PlayerList() {
             return (
                 <ShowDpModal
                     showTitle={false}
-                    modalAttrs={{ size: "sm" }}
+                    modalAttrs={{ size: "md" }}
                     renderModalBody={() => (
                         <div>
                             <Image
                                 style={{
                                     width: "100%",
-                                    // maxHeight: "10vh",
+                                    maxHeight: "80vh",
                                     objectFit: "contain",
                                 }}
                                 src={value || defaultAvatar}
@@ -43,13 +47,14 @@ function PlayerList() {
                                 borderRadius: 50,
                                 justifyContent: "center",
                                 alignItems: "center",
-                                border: '1px solid grey', maxHeight: '5vh', overflow: 'hidden'
+                                border: '1px solid grey',
+                                height: '5vh', overflow: 'hidden'
                             }}
                         >
                             <Image
                                 style={{
                                     width: "100%",
-                                    // maxHeight: "10vh",
+                                    Height: "10vh",
                                     // objectFit: "cover",
                                 }}
                                 src={value || defaultAvatar}
@@ -79,7 +84,7 @@ function PlayerList() {
                             backgroundColor: '#2168bf'
                         }}
                     >
-                        <LinkIcon />
+                        <LinkIcon color="#fff" />
                     </div>
 
                 </NavLink>
@@ -91,6 +96,7 @@ function PlayerList() {
                     to={value}
                     target="_blank" // Opens link in a new tab
                     rel="noopener noreferrer"
+                    style={{ textDecoration: 'none' }}
                 >
                     <div
                         style={{
@@ -103,10 +109,33 @@ function PlayerList() {
                             backgroundColor: '#a66ef0'
                         }}
                     >
-                        <LinkIcon />
+                        <LinkIcon color="#000" />
                     </div>
 
                 </NavLink>
+            );
+        },
+        updateDp: ({ row, reFetch }) => {
+            return (
+                <ModalWrapper
+                    modalTitle={"UPDATE" + " " + row.playerName + "'s " + 'DP'}
+                    modalAttrs={{ size: "md" }}
+                    disabled={Number(row.isUpdatedDp) === 1}
+                    disabledTitle='This player DP has been updated once.'
+                    renderModalBody={(closeModal) => (
+                        <PlayerForm
+                            onAfterSubmit={() => {
+                                closeModal();
+                                reFetch();
+                            }}
+                            onCancel={closeModal}
+                            endpoint={endpoints.playerList?.update}
+                            updateValues={row}
+                        />
+                    )}
+                >
+                    <Edit />
+                </ModalWrapper>
             );
         },
     }

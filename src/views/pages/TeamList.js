@@ -69,17 +69,18 @@ const cellModifier = {
                             borderRadius: 50,
                             justifyContent: "center",
                             alignItems: "center",
-                            border: '1px solid grey'
+                            border: '1px solid grey',
+                            height: '5vh',
                         }}
                     >
                         <Image
                             style={{
                                 width: "100%",
-                                maxHeight: "20vh",
-                                objectFit: "cover",
+                                // maxHeight: "20vh",
+                                // objectFit: "cover",
                             }}
                             src={value || defaultAvatar}
-                            roundedCircle
+                            // roundedCircle
                             alt="team logo"
                         />
                     </div>

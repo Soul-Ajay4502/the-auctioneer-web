@@ -71,7 +71,7 @@ function ShowDpModal({
                         }}
                     />
                 </div>
-                <Modal.Body className="p-3 p-md-4" style={{ background: '#c37cf2' }}>
+                <Modal.Body style={{ background: '#c7c6c3' }} >
                     {renderModalBody(closeModal)}
                 </Modal.Body>
                 {showFooter && (

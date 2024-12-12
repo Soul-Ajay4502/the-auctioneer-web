@@ -61,7 +61,7 @@ const PaginatedTable = (props) => {
                 return cellModifier[field]
                     ? cellModifier[field]({
                         value: params.value,
-                        row: params.data,
+                        row: params?.data,
                         reFetch: fetchData,
                     })
                     : params.value;

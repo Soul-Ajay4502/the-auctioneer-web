@@ -64,6 +64,7 @@ const viewProps = Object.freeze({
             "PAYMENT SCREENSHOT",
             "ID PROOF",
             "REGISTRATION TIME",
+            "UPDATE DP"
         ]
         ,
         relevants: [
@@ -78,6 +79,7 @@ const viewProps = Object.freeze({
             "paymentScreenshot",
             "idProofUrl",
             "registrationTime",
+            "updateDp"
         ]
         ,
     },
