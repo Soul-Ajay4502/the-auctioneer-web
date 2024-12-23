@@ -9,7 +9,8 @@ function ShowDpModal({
     children,
     disabled,
     showFooter = false,
-    showTitle = true
+    showTitle = true,
+    showClose = false
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,11 +39,11 @@ function ShowDpModal({
                     onHiding();
                     closeModal();
                 }}
-                backdrop="static"
+                // backdrop="static"
                 scrollable={true}
                 {...modalAttrs}
             >
-                <div className="pb-2 pt-5 px-4 text-center">
+                {showClose && <div className="pb-2 pt-5 px-4 text-center">
                     {showTitle && <div
                         className="m-0 h5 pe-2"
                         style={{
@@ -70,7 +71,7 @@ function ShowDpModal({
                             fontSize: "16px",
                         }}
                     />
-                </div>
+                </div>}
                 <Modal.Body style={{ background: '#c7c6c3' }} >
                     {renderModalBody(closeModal)}
                 </Modal.Body>

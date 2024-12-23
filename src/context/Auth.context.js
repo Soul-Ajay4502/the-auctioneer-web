@@ -48,7 +48,7 @@ const AuthenticationProvider = (props) => {
                 return res;
             },
             (err) => {
-                switch (err.response.status) {
+                switch (err?.response?.status) {
                     case 401:
                         const originalRequest = err.config;
 

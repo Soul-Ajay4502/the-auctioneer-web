@@ -20,6 +20,13 @@ const endpoints = Object.freeze({
         downloadUploadTemplate: '',
         upload: '/template/upload',
     },
+    auction: {
+        playerIds: '/players/playerIds/'
+    },
+    dashboard: {
+        counts: 'dashboard/',
+        topPlayers: 'dashboard/topValuePlayers'
+    }
 });
 
 export default endpoints;

@@ -1,4 +1,5 @@
 import { lazy } from "react";
+const Auction = lazy(() => import("../views/pages/Auction"));
 const TeamList = lazy(() => import("../views/pages/TeamList"));
 const LandingPage = lazy(() => import("../views/pages/LandingPage"));
 const LeagueList = lazy(() => import("../views/pages/LeagueList"));
@@ -32,7 +33,7 @@ var routes = [
     {
         path: "auction",
         name: "Auction",
-        page: PlayerList,
+        page: Auction,
         // showOnTab: fa,
     },
     {

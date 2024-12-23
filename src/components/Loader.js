@@ -45,7 +45,7 @@ function Loader({ type, progress, description = "Don't go back or refresh while 
                             </div>
                         </div>
                     ) : (
-                        <Spinner animation='border' />
+                        <Spinner animation='border' variant="info" />
                     )}
                 </div>,
                 el
