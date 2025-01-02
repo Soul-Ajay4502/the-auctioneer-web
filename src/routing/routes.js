@@ -4,6 +4,8 @@ const TeamList = lazy(() => import("../views/pages/TeamList"));
 const LandingPage = lazy(() => import("../views/pages/LandingPage"));
 const LeagueList = lazy(() => import("../views/pages/LeagueList"));
 const PlayerList = lazy(() => import("../views/pages/PlayersList"));
+const PlayerListByTeam = lazy(() => import("../views/pages/PlayerListByTeam"));
+
 
 var routes = [
     {
@@ -39,7 +41,7 @@ var routes = [
     {
         path: "player-team-list",
         name: "Players By Team",
-        page: PlayerList,
+        page: PlayerListByTeam,
         notShowOnMenu: true,
     },
 ];

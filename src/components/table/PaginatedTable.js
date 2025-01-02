@@ -1,5 +1,11 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { Button, InputGroup, FormControl, FormSelect } from "react-bootstrap";
+import {
+    Button,
+    InputGroup,
+    FormControl,
+    FormSelect,
+    Alert,
+} from "react-bootstrap";
 import { AgGridReact } from "ag-grid-react";
 import ModalWrapper from "../ModalWrapper";
 import Loader from "../Loader";
@@ -25,11 +31,11 @@ const PaginatedTable = (props) => {
         insertable = true,
         cellModifier = {},
         addFormProps = {},
-        reFetch = () => { },
         addBtnLabel = "",
         headerExtras = <></>,
         pinnedFieldRelevant = "leagueName",
-        isUploadEnable = false
+        isUploadEnable = false,
+        headname,
     } = props;
 
     const [paginate, setPagination] = useState({});
@@ -61,8 +67,8 @@ const PaginatedTable = (props) => {
                 return cellModifier[field]
                     ? cellModifier[field]({
                         value: params.value,
-                        row: params?.data,
-                        reFetch: fetchData,
+                        row: params?.data || [],
+                        reFetch: () => { fetchData(); setCurrentPage(1) },
                     })
                     : params.value;
             },
@@ -70,15 +76,16 @@ const PaginatedTable = (props) => {
     }, [relevants, columnHeads, cellModifier]);
 
     // Fetch data from the API
-    const fetchData = async (page = 1) => {
+    const fetchData = async () => {
+
         try {
             setLoading(true);
             const response = await axios.get(getDataUrl, {
-                params: { page, limit: recordsPerPage },
+                params: { page: currentPage, limit: recordsPerPage },
             });
             const { data } = response?.data?.responseData;
-            setRowData(data);
-            setPagination(response?.data?.responseData?.pagination);
+            setRowData(data || []);
+            setPagination(response?.data?.responseData?.pagination || []);
         } catch (error) {
             console.error("Error fetching data:", error);
             // toast.error("Failed to fetch data!");
@@ -88,17 +95,17 @@ const PaginatedTable = (props) => {
     };
 
     useEffect(() => {
-        fetchData(currentPage);
+        fetchData();
     }, [currentPage]);
 
     const handleNext = () => {
-        if (paginate.currentPage < paginate.totalPages) {
+        if (Number(paginate.currentPage) < Number(paginate.totalPages)) {
             setCurrentPage((prev) => prev + 1);
         }
     };
 
     const handlePrevious = () => {
-        if (paginate.currentPage > 1) {
+        if (Number(paginate.currentPage) > 1) {
             setCurrentPage((prev) => prev - 1);
         }
     };
@@ -108,10 +115,10 @@ const PaginatedTable = (props) => {
     };
 
     const handleLast = () => {
-        setCurrentPage(paginate.totalPages);
+        setCurrentPage(Number(paginate.totalPages));
     };
 
-    let errorMessage = !loading && rowData.length === 0 ? `List is Empty` : "";
+    let errorMessage = !loading && rowData?.length === 0 ? `List is Empty` : "";
 
     return (
         <div className="crudCard">
@@ -123,9 +130,21 @@ const PaginatedTable = (props) => {
                         fontWeight: 700,
                     }}
                 >
-                    {typeof name === 'string' ? name.toUpperCase() : name}
+                    {headname
+                        ? headname
+                        : typeof name === "string"
+                            ? name.toUpperCase()
+                            : name}
                 </span>
-                {isUploadEnable && <BulkUpload afterUpload={() => fetchData()} templateUrl={endpointsForDownload.playerList.downloadUploadTemplate} />}
+                {isUploadEnable && (
+                    <BulkUpload
+                        afterUpload={() => fetchData()}
+                        templateUrl={
+                            endpointsForDownload.playerList
+                                .downloadUploadTemplate
+                        }
+                    />
+                )}
 
                 {insertable && (
                     <ModalWrapper
@@ -157,8 +176,17 @@ const PaginatedTable = (props) => {
 
             <div className="p-0">
                 {!!errorMessage ? (
-                    <div className="text-center h1 py-4 text-muted">
-                        {errorMessage}
+                    <div
+                        className="ag-theme-alpine"
+                        style={{ height: "486px", width: "100%" }}
+                    >
+                        <Alert
+                            variant="danger"
+                            style={{ height: "100%", justifyContent: "center", alignItems: 'center', display: 'flex', }}
+                            className="text-center h1 py-4 text-muted"
+                        >
+                            {errorMessage?.toUpperCase()}
+                        </Alert>
                     </div>
                 ) : (
                     <div
@@ -174,80 +202,82 @@ const PaginatedTable = (props) => {
                     </div>
                 )}
             </div>
-            {rowData.length > 0 && <div
-                style={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "right",
-                    paddingRight: 20,
-                    background: "#fff",
-                    border: "1px solid #c7c8c9",
-                    marginTop: 15,
-                    // borderRadius: 20,
-                    // boxShadow: '5px 5px 15px grey',
-                    backgroundColor: '#e4e6eb'
-                }}
-            >
+            {rowData?.length > 0 && (
                 <div
-                    className="d-flex justify-content-between align-items-center py-2"
-                    style={{ width: 500 }}
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "right",
+                        paddingRight: 20,
+                        background: "#fff",
+                        border: "1px solid #c7c8c9",
+                        marginTop: 15,
+                        // borderRadius: 20,
+                        // boxShadow: '5px 5px 15px grey',
+                        backgroundColor: "#e4e6eb",
+                    }}
                 >
-                    <PrevDouble
-                        onClick={handleFirst}
-                        cursor={
-                            paginate.currentPage === 1
-                                ? "not-allowed"
-                                : "pointer"
-                        }
-                    />
-                    <Prev
-                        onClick={handlePrevious}
-                        cursor={
-                            paginate.currentPage === 1
-                                ? "not-allowed"
-                                : "pointer"
-                        }
-                    />
-                    <span>
-                        Page {currentPage} of {paginate.totalPages || 1}
-                    </span>
-                    <InputGroup style={{ maxWidth: "100px" }}>
-                        {/* Page Dropdown */}
-                        <FormSelect
-                            value={currentPage}
-                            onChange={handleDropdownChange}
-                            style={{ width: "50%" }}
-                        >
-                            {pageNumbers.map((page) => (
-                                <option
-                                    key={page}
-                                    value={page}
-                                    onClick={() => setCurrentPage(page)}
-                                >
-                                    {page}
-                                </option>
-                            ))}
-                        </FormSelect>
-                        {/* <Button onClick={() => handlePageJump(customPageInput)}>Go</Button> */}
-                    </InputGroup>
-                    <Next
-                        onClick={handleNext}
-                        cursor={
-                            paginate.currentPage == paginate.totalPages
-                                ? "not-allowed"
-                                : "pointer"
-                        }
-                    />
-                    <NextDouble
-                        onClick={handleLast}
-                        cursor={
-                            paginate.currentPage == paginate.totalPages
-                                ? "not-allowed"
-                                : "pointer"
-                        }
-                    />
+                    <div
+                        className="d-flex justify-content-between align-items-center py-2"
+                        style={{ width: 500 }}
+                    >
+                        <PrevDouble
+                            onClick={handleFirst}
+                            cursor={
+                                Number(paginate.currentPage) === 1
+                                    ? "not-allowed"
+                                    : "pointer"
+                            }
+                        />
+                        <Prev
+                            onClick={handlePrevious}
+                            cursor={
+                                Number(paginate.currentPage) === 1
+                                    ? "not-allowed"
+                                    : "pointer"
+                            }
+                        />
+                        <span>
+                            Page {currentPage} of {paginate.totalPages || 1}
+                        </span>
+                        <InputGroup style={{ maxWidth: "100px" }}>
+                            {/* Page Dropdown */}
+                            <FormSelect
+                                value={currentPage}
+                                onChange={handleDropdownChange}
+                                style={{ width: "50%" }}
+                            >
+                                {pageNumbers.map((page) => (
+                                    <option
+                                        key={page}
+                                        value={page}
+                                        onClick={() => setCurrentPage(page)}
+                                    >
+                                        {page}
+                                    </option>
+                                ))}
+                            </FormSelect>
+                            {/* <Button onClick={() => handlePageJump(customPageInput)}>Go</Button> */}
+                        </InputGroup>
+                        <Next
+                            onClick={handleNext}
+                            cursor={
+                                Number(paginate.currentPage) === Number(paginate.totalPages)
+                                    ? "not-allowed"
+                                    : "pointer"
+                            }
+                        />
+                        <NextDouble
+                            onClick={handleLast}
+                            cursor={
+                                Number(paginate.currentPage) === paginate.totalPages
+                                    ? "not-allowed"
+                                    : "pointer"
+                            }
+                        />
+                    </div>
                 </div>
-            </div>}
+            )}
             {loading && <Loader />}
         </div>
     );

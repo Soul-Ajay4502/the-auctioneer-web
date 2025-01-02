@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import endpoints from "../../services/endpoints";
 import Loader from "../../components/Loader";
-import { Card, Col, Row } from "react-bootstrap";
+import { Badge, Card, Col, Row } from "react-bootstrap";
 import capitalizeCamelCase from "../../helpers/capitalizeCamelCase";
 import { ReactComponent as Rupee } from "../../assets/icons/Rupee.svg";
 import { ReactComponent as Tag } from "../../assets/icons/Tag.svg";
+import duck from '../../assets/img/duck.webp'
 
 import Ranking from "../../components/Ranking";
+import LeagueCarousel from "./supportingComponents/LeagueCarousel";
 
 const POSITIONS = {
     0: `linear-gradient(90deg, rgba(0,6,36,1) 0%, rgba(17,121,9,1) 0%, rgba(228,255,0,1) 100%)`,
@@ -19,6 +21,7 @@ function LandingPage() {
     const [loading, setLoading] = useState(true);
     const [countData, setCountData] = useState({});
     const [playerData, setPlayerData] = useState([]);
+    // const [leagues, setLeagues] = useState([]);
 
     // Function to fetch the data
     const fetchData = async () => {
@@ -28,9 +31,12 @@ function LandingPage() {
             const playerResponse = await axios.get(
                 endpoints.dashboard.topPlayers
             );
+            // const leagueResponse = await axios.get(
+            //     endpoints.dashboard.leagues
+            // );
             setCountData(response.data.responseData); // Assuming the data is in responseData
             setPlayerData(playerResponse.data.responseData);
-            console.log(playerResponse.data);
+            // setLeagues(leagueResponse.data.responseData)
         } catch (error) {
             console.error("Error fetching data:", error);
             // Optionally display error message
@@ -44,7 +50,7 @@ function LandingPage() {
     }, []);
 
     return (
-        <div style={{ padding: 20, marginTop: 100, }}>
+        <div style={{ padding: 20, marginTop: 100 }}>
             {loading && <Loader />} {/* Show loader while fetching data */}
             <Row>
                 <Col>
@@ -52,12 +58,12 @@ function LandingPage() {
                         {/* Assuming countData is an object, use Object.entries or Object.values to map over */}
                         {Object.entries(countData).map(
                             ([key, value], index) => (
-                                <Col key={index} md="4">
+                                <Col key={index} md="3">
                                     <Chip
-                                        bg="#FAEDC6"
+                                        bg={`radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)`}
                                         title={capitalizeCamelCase(key)}
                                     >
-                                        {value}
+                                        {value || 0}
                                     </Chip>
                                 </Col>
                             )
@@ -66,42 +72,73 @@ function LandingPage() {
                 </Col>
             </Row>
             <Row>
-                <div
-                    style={{
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                        background: 'linear-gradient(to right, #ff7e5f, #feb47b)',
-                        padding: '10px 20px',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                        textAlign: 'center',
-                        color: '#fff',
-                        marginBottom: 10
-                    }}
-                >
-                    Prime Picks of the Auction Across All Leagues
-                </div>
-
-                {playerData.map((player, index) => (
-                    <Col key={index} md="4">
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginBottom: index + 1 === 3 ? 0 : 25,
-                            }}
-                        >
-                            <Ranking rank={index + 1} />
-                        </div>
-                        <PlayerCard
-                            key={index}
-                            player={player}
-                            position={index}
-                        />
-                    </Col>
-                ))}
+                <LeagueCarousel />
             </Row>
+            {playerData?.length > 0 ? (
+                <Row>
+                    <div
+                        style={{
+                            fontSize: "20px",
+                            fontWeight: "bold",
+                            background:
+                                "linear-gradient(to right, #ff7e5f, #feb47b)",
+                            padding: "10px 20px",
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            textAlign: "center",
+                            color: "#fff",
+                            marginBottom: 10,
+                        }}
+                    >
+                        Prime Picks of the Auction Across All Leagues
+                    </div>
+
+                    {playerData.map((player, index) => (
+                        <Col key={index} md="4">
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginBottom: index + 1 === 3 ? 0 : 25,
+                                }}
+                            >
+                                <Ranking rank={index + 1} />
+                            </div>
+                            <PlayerCard
+                                key={index}
+                                player={player}
+                                position={index}
+                            />
+                        </Col>
+                    ))}
+                </Row>
+            ) : (
+                <Row>
+                    <div
+                        style={{
+                            fontSize: "20px",
+                            fontWeight: "bold",
+                            background:
+                                "linear-gradient(to right, #ff7e5f, #feb47b)",
+                            padding: "10px 20px",
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            textAlign: "center",
+                            color: "#fff",
+                            marginBottom: 10,
+                            height: "360px",
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        There are no Prime Picks selected in any league so far.
+                        <img src={duck} height={280} style={{ borderRadius: 200, boxShadow: '6px 10px 25px rgba(0, 0, 0, 0.7)' }} alt="duck dp" />
+                    </div>{" "}
+                </Row>
+            )}
         </div>
     );
 }
@@ -167,18 +204,23 @@ const PlayerCard = ({ position, player }) => {
                     style={{
                         position: "absolute",
                         top: 10,
-                        right: 10,
-                        background: "rgba(239, 9, 204, 0.9)",
+                        right: 5,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
                         padding: "0 10px",
                         borderRadius: 8,
-
                     }}
                     title={`${player?.leagueName} League`}
                 >
-                    <Tag color="#1c2cbd" /> {player?.leagueName}
+                    <Badge
+                        bg="secondary"
+                        text="light"
+                        style={{ marginRight: 5 }}
+                    >
+                        {player?.leagueFullName}
+                    </Badge>
+                    <Tag color="#1c2cbd" />
                 </div>
                 <div style={{ width: "20%" }}>
                     <img
@@ -192,16 +234,23 @@ const PlayerCard = ({ position, player }) => {
                 </div>
 
                 <div
-                    style={{ ...detailsStyle, width: "60%", textAlign: "left" }}
+                    style={{ ...detailsStyle, width: "50%", textAlign: "left" }}
                 >
                     <h3 style={nameStyle}>{player?.name}</h3>
                     <p style={detailTextStyle}>
-                        <strong>Team:</strong> {player?.teamName}
+                        <strong>Team:</strong>{" "}
+                        <Badge bg="warning" text="dark">
+                            {player?.teamName}
+                        </Badge>
                     </p>
                     <p style={detailTextStyle}>
-                        <strong>Position:</strong> {player?.playerRole}
+                        {/* <strong>Position:</strong> */}
+                        <Badge bg="info" text="dark">
+                            {player?.playerRole}
+                        </Badge>
                     </p>
-                    {/* <p style={detailTextStyle}><strong>Age:</strong> {player?.age}</p> */}
+                    {/* <p style={detailTextStyle}></p> */}
+                    {/* {player?.leagueName} */}
                 </div>
             </div>
             <div
@@ -233,7 +282,7 @@ const PlayerCard = ({ position, player }) => {
 // Chip Component to display individual chips
 function Chip({ bg, title, children }) {
     return (
-        <Card bg="transparent" className="text-center border-0 mb-3">
+        <Card bg="transparent" className="text-center border-0 mb-3" title={title === 'Total Amount' && 'sum amount of all leagues that you registered'}>
             <div className="small h6 text-dark">{title}</div>
             <div
                 className="p-4 fs-3 my-3 card-shadow"
@@ -243,12 +292,15 @@ function Chip({ bg, title, children }) {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginRight: "30px",
-                    marginLeft: "30px",
-                    color: "#272727E5",
+                    // marginRight: "30px",
+                    // marginLeft: "30px",
+                    color: "#fff",
+                    fontSize: "32px",
+                    fontWeight: 700,
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
             >
-                {children}
+                {title === 'Total Amount' && <Rupee />}{children}
             </div>
         </Card>
     );

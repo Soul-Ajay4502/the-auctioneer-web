@@ -1,0 +1,60 @@
+/* Container for all the items */
+.dynamic-div-container {
+    display: flex;
+    flex-wrap: wrap;  /* Allows multiple items to be displayed next to each other */
+    gap: 20px;  /* Space between each item */
+    justify-content: center;
+    margin: 20px;
+  }
+  
+  /* Each individual item in the display */
+  .dynamic-item {
+    background-color: red; /* Background color for each item */
+    border-radius: 10px;
+    width: 300px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s ease; /* Smooth scaling effect on hover */
+  }
+  
+  .dynamic-item:hover {
+    transform: scale(1.05);  /* Slightly enlarge the item on hover */
+  }
+  
+  /* Image Styling */
+  .dynamic-item img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;  /* Ensures the image fills the circle without distortion */
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+  
+  /* Caption styling for key-value pairs */
+  .dynamic-caption p {
+    font-size: 14px;
+    color: #fff;
+    margin: 5px 0;
+  }
+  
+  .dynamic-caption strong {
+    color: #f8d02d; /* Yellow color for keys */
+  }
+  
+  /* Additional styling for the text content */
+  .dynamic-caption {
+    /* background: linear-gradient(90deg, rgba(0,6,36,1) 0%, rgba(190,14,205,1) 22%, rgba(255,0,219,0.9809173669467787) 100%);  Slight transparency for readability */
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .ellipsis-badge {
+    display: inline-block;    /* Makes the badge element behave as an inline element */
+    max-width: 250px;         /* Set the max width to restrict the content */
+    white-space: nowrap;      /* Prevents the text from wrapping */
+    overflow: hidden;         /* Hides the overflowed text */
+    text-overflow: ellipsis;  /* Adds the ellipsis (...) when the text is too long */
+  }
+  

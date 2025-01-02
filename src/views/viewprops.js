@@ -6,12 +6,16 @@ const viewProps = Object.freeze({
             "LEAGUE FULL NAME",
             "LOCATIONS IN LEAGUE",
             "TOTAL PLAYERS IN LEAGUE",
-            "LEAGUE REGISTRATION FEE",
+            "REGISTRATION FEE",
             "TOTAL TEAMS IN LEAGUE",
             "LEAGUE START DATE",
             "LEAGUE END DATE",
             "REGISTRATION ENDS ON",
+            "BID AMOUNT PER TEAM",
+            "AUCTION DATE",
             "HAS UNSOLD",
+            "REGISTERED PLAYERS",
+            "CREATED TEAMS",
             "EDIT",
         ],
         relevants: [
@@ -24,7 +28,11 @@ const viewProps = Object.freeze({
             "leagueStartDate",
             "leagueEndDate",
             "registrationEndDate",
+            "bidAmountPerTeam",
+            "auctionStartDate",
             "hasUnsold",
+            "playerCount",
+            "teamCount",
             "edit",
         ],
     },
@@ -36,6 +44,7 @@ const viewProps = Object.freeze({
             "TEAM OWNER",
             "TEAM OWNER PHONE",
             "JERSEY COLOR",
+            "TOTAL BID AMOUNT",
             "TEAM MEMBERS",
             "EDIT",
         ],
@@ -45,6 +54,7 @@ const viewProps = Object.freeze({
             "teamOwner",
             "teamOwnerPhone",
             "jerseyColor",
+            "maxAmountForBid",
             "members",
             "edit"
 
@@ -80,6 +90,33 @@ const viewProps = Object.freeze({
             "idProofUrl",
             "registrationTime",
             "updateDp"
+        ]
+        ,
+    },
+    playersByTeam: {
+        name: "Player List", // Update the name as needed
+        columnHeads: [
+            "PLAYER NAME",
+            "PLAYER PHOTO",
+            "WHATSAPP NO",
+            "PLACE",
+            "SOLD TO",
+            "SOLD AMOUNT",
+            "PLAYER ROLE",
+            "BATTING STYLE",
+            "BOWLING STYLE",
+        ]
+        ,
+        relevants: [
+            "playerName",
+            "playerPhoto",
+            "whatsappNo",
+            "place",
+            "teamName",
+            "soldAmount",
+            "playerRole",
+            "battingStyle",
+            "bowlingStyle",
         ]
         ,
     },

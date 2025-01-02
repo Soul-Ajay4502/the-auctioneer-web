@@ -63,7 +63,7 @@ function PlayerProfileModal({
             teamColor: lightColors[index] || "#72ecf2",
         }))
     );
-    const [bidIncrement, setBidIncrement] = useState(100);
+    const [bidIncrement, setBidIncrement] = useState(Number(leagueDetails.player_base_price) || 100);
     const [currentBid, setCurrentBid] = useState({
         teamId: "",
         teamName: "",
@@ -93,6 +93,28 @@ function PlayerProfileModal({
     };
     const borderProperty = "1px solid #000";
     const borderRadius = "5px";
+
+    const clearStates = () => {
+        setCurrentBid({
+            teamId: "",
+            teamName: "",
+        });
+        setPreviousBid({
+            teamId: "",
+            teamName: "",
+            playerValue: 0,
+        });
+        setBidIncrement(100);
+        setPlayerValue(0);
+        setTeamBalances(
+            teams.map((team, index) => ({
+                ...team,
+                balance: team.max_amount_for_bid, // Initialize balance to max amount
+                isReachedMaxAmountPerPlayer: false,
+                teamColor: lightColors[index] || "#72ecf2",
+            }))
+        )
+    }
 
     const handleBidClick = (teamId, teamName, maxAmountPerPlayer) => {
         // const bidIncrement = 500; // Fixed bid increment
@@ -159,15 +181,7 @@ function PlayerProfileModal({
             toast.success(
                 `${playerDetails?.playerName} Sold to ${currentBid?.teamName}`
             );
-            setCurrentBid({
-                teamId: "",
-                teamName: "",
-            });
-            setPreviousBid({
-                teamId: "",
-                teamName: "",
-                playerValue: 0,
-            });
+            clearStates();
             setIsExploding(true)
             reFetch();
         } catch (err) { }
@@ -208,6 +222,7 @@ function PlayerProfileModal({
                 onHide={() => {
                     onHiding();
                     closeModal();
+                    clearStates()
                 }}
                 backdrop="static"
                 scrollable={true}
@@ -235,6 +250,7 @@ function PlayerProfileModal({
                             width: "4%",
                             marginRight: 10,
                             textAlign: "center",
+                            padding: '10px 0'
                         }}
                     >
                         {playerDetails?.playerId}
@@ -258,7 +274,7 @@ function PlayerProfileModal({
                     </div>
 
                     <CloseButton
-                        onClick={closeModal}
+                        onClick={() => { closeModal(); clearStates() }}
                         style={{
                             position: "absolute",
                             top: "10px",
@@ -294,7 +310,7 @@ function PlayerProfileModal({
                                 src={playerDetails?.playerPhoto}
                                 alt="player dp"
                                 style={{
-                                    maxHeight: "550px",
+                                    height: "550px",
                                     borderTopLeftRadius: borderRadius,
                                     borderBottomLeftRadius: borderRadius,
                                     borderLeft: borderProperty,
@@ -460,8 +476,9 @@ function PlayerProfileModal({
                                     style={{
                                         padding: "40px 25px",
                                         border: "1px solid #000",
-                                        borderRadius: "50%",
+                                        // borderRadius: "50%",
                                         background: "#e9ecef",
+                                        width: '100%'
                                     }}
                                 >
                                     <strong>

@@ -1,4 +1,4 @@
-import { Image } from "react-bootstrap";
+import { Badge, Image } from "react-bootstrap";
 import PaginatedTable from "../../components/table/PaginatedTable";
 import { useLeagueState } from "../../context/League.context";
 import endpoints from "../../services/endpoints";
@@ -118,7 +118,7 @@ function PlayerList() {
         updateDp: ({ row, reFetch }) => {
             return (
                 <ModalWrapper
-                    modalTitle={"UPDATE" + " " + row.playerName + "'s " + 'DP'}
+                    modalTitle={`UPDATE ${row.playerName}'s DP`}
                     modalAttrs={{ size: "md" }}
                     disabled={Number(row.isUpdatedDp) === 1}
                     disabledTitle='This player DP has been updated once.'
@@ -146,14 +146,17 @@ function PlayerList() {
                 <PaginatedTable
                     getDataUrl={`${endpoints.playerList.list}${leagueDetails.leagueId}`}
 
-                    name={<LeagueNameFormatter
+                    headname={<LeagueNameFormatter
                         name={leagueDetails.leagueName}
                         fullName={leagueDetails.leagueFullName}
+                        playerCount={leagueDetails?.playerCount}
+                        showBadge={Number(leagueDetails?.playerCount) === Number(leagueDetails?.totalPlayers)}
                     />}
                     insertable={false}
                     {...viewProps.players}
                     cellModifier={cellModifier}
-                    isUploadEnable
+                    isUploadEnable={Number(leagueDetails?.playerCount) < Number(leagueDetails?.totalPlayers)}
+                    pinnedFieldRelevant='playerName'
                 />
             </div>
         </>
@@ -162,10 +165,19 @@ function PlayerList() {
 
 export default PlayerList;
 
-const LeagueNameFormatter = ({ name, fullName }) => {
+const LeagueNameFormatter = ({ name, fullName, playerCount, showBadge = false }) => {
     return (
         <div>
-            <div style={{ display: 'flex' }}><p style={{ color: '#8925f5', marginBottom: 0 }}>{name.toUpperCase()}</p><p style={{ marginBottom: 0 }}>-PLAYER LIST</p></div>
-            <p style={{ fontSize: 12, textAlign: 'center' }}>{fullName}</p>
-        </div>)
-}
+            <div style={{ display: "flex" }}>
+                <p style={{ color: "#8925f5", marginBottom: 0 }}>
+                    {name.toUpperCase()}
+                </p>
+                <p style={{ marginBottom: 0 }}>-PLAYER LIST</p>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                <p style={{ fontSize: 12, textAlign: "center" }}>{fullName}</p>
+                {showBadge && <Badge bg="success" style={{ borderRadius: 200, padding: '10px 12px' }} title="Number of registered players">{playerCount}</Badge>
+                }</div>
+        </div>
+    );
+};

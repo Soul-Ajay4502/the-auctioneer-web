@@ -23,6 +23,15 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
             .finally(() => setSubmitting(false));
     };
 
+    const isSameDate = (date, date2 = new Date()) => {
+        const date1 = new Date(date);
+        return (
+            date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate()
+        );
+    }
+
     const initialFormValues = updateValues || {
         leagueName: "",
         leagueFullName: "",
@@ -35,6 +44,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
         registrationFee: "",
         createdBy: "",
         registrationEndDate: "",
+        playerBasePrice: ""
     };
 
     return (
@@ -97,12 +107,20 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                         {/* </Col> */}
                     </Row>
                     <Row>
-                        <FormikControl
-                            control="input"
-                            label="Total Players"
-                            name="totalPlayers"
-                            type="number"
-                        />
+                        <Col md={6}>
+                            <FormikControl
+                                control="input"
+                                label="Total Players"
+                                name="totalPlayers"
+                                type="number"
+                            /></Col>
+                        <Col md={6}>
+                            <FormikControl
+                                control="input"
+                                label="Player Base Price"
+                                name="playerBasePrice"
+                                type="number"
+                            /></Col>
                     </Row>
                     <Row>
                         <Col md={6}>
@@ -162,6 +180,26 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 type="date"
                                 label="Registration End Date"
                                 name="registrationEndDate"
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <FormikControl
+                                control="input"
+                                type="date"
+                                label="Auction Start Date"
+                                name="auctionStartDate"
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <FormikControl
+                                control="input"
+                                required
+                                label="Total Bid Amount Per Team"
+                                name="bidAmountPerTeam"
+                                type="number"
+                                disabled={isSameDate(updateValues?.auctionStartDate)}
                             />
                         </Col>
                     </Row>

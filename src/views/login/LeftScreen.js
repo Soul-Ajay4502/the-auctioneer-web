@@ -4,7 +4,7 @@ const LeftScreen = () => {
     return (
         <div
             style={{
-                width: "40%",
+                width: "38%",
                 overflow: "hidden",
                 position: "relative",
             }}
@@ -12,12 +12,12 @@ const LeftScreen = () => {
             <div
                 style={{
                     position: "absolute",
-                    top: "25%",
+                    top: "28%",
                     left: "4%",
                     color: "#FFFFFF",
                 }}
             >
-                <p style={{ fontSize: 24, fontWeight: 600, marginBottom: 60 }}>
+                <p style={{ fontSize: 22, fontWeight: 600, marginBottom: 60 }}>
                     Experience the Thrill of Building Your Dream Team!
                 </p>
                 <div

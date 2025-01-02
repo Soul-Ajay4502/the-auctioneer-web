@@ -13,9 +13,16 @@ import { useLeagueState } from "../../../context/League.context";
 function TeamForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
     const { selectedLeague } = useLeagueState();
     const { leagueDetails } = selectedLeague;
+
     const submitHandler = (values, { setSubmitting }) => {
         const formData = new FormData();
-        const body = { ...values, leagueId: leagueDetails.leagueId };
+        const body = {
+            ...values,
+            leagueId: leagueDetails?.leagueId,
+            playerBasePrice: leagueDetails?.playerBasePrice,
+            folderName: leagueDetails?.leagueName,
+            // maxAmountForBid:leagueDetails?.bidAmountPerTeam,
+        };
 
         if (body.teamLogo instanceof File) {
             formData.append("teamLogo", body.teamLogo);
@@ -43,6 +50,7 @@ function TeamForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
         leagueId: "",
         jerseyColor: "",
         teamLogo: "",
+        maxAmountForBid: leagueDetails?.bidAmountPerTeam,
     };
 
     return (
@@ -51,17 +59,28 @@ function TeamForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
             validationSchema={Yup.object({
                 teamName: Yup.string().required("Team name is required."),
                 teamOwner: Yup.string().nullable(),
-                teamOwnerPhone: Yup.string().nullable().matches(/^\d+$/, "Phone number must be a number"),
+                teamOwnerPhone: Yup.string()
+                    .nullable()
+                    .matches(/^\d+$/, "Phone number must be a number"),
                 jerseyColor: Yup.string().nullable(),
-
             })}
             onSubmit={submitHandler}
         >
             {({ isSubmitting, setFieldValue }) => (
                 <Form>
-                    {!updateValues && <div style={{ fontSize: 12, color: 'red', textAlign: 'center', fontWeight: 700 }}>
-                        Be careful when uploading the team logo, as it cannot be updated or edited.
-                    </div>}
+                    {!updateValues && (
+                        <div
+                            style={{
+                                fontSize: 12,
+                                color: "red",
+                                textAlign: "center",
+                                fontWeight: 700,
+                            }}
+                        >
+                            Be careful when uploading the team logo, as it
+                            cannot be updated or edited.
+                        </div>
+                    )}
                     <Row>
                         <Col md={6}>
                             <FormikControl
@@ -96,19 +115,33 @@ function TeamForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                             />
                         </Col>
 
-                        {!updateValues && <div>
-                            <label htmlFor="teamLogo">Team Logo</label>
-                            <input
-                                name="teamLogo"
-                                type="file"
-                                accept="image/jpeg, image/jpg, image/png, image/gif"
-                                onChange={(event) => {
-                                    setFieldValue("teamLogo", event.currentTarget.files[0]);
-                                }}
-                                className="form-control"
-                            />
-                        </div>}
-
+                        {!updateValues && (
+                            <div>
+                                <label htmlFor="teamLogo">Team Logo</label>
+                                <input
+                                    name="teamLogo"
+                                    type="file"
+                                    accept="image/jpeg, image/jpg, image/png, image/gif"
+                                    onChange={(event) => {
+                                        setFieldValue(
+                                            "teamLogo",
+                                            event.currentTarget.files[0]
+                                        );
+                                    }}
+                                    className="form-control"
+                                />
+                            </div>
+                        )}
+                    </Row>
+                    <Row>
+                        <FormikControl
+                            control="input"
+                            required
+                            label="Total Bid Amount"
+                            name="maxAmountForBid"
+                            type="number"
+                            disabled
+                        />
                     </Row>
                     <Row>
                         <Col className="text-center">

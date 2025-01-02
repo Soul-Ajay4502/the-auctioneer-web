@@ -6,6 +6,10 @@ import { Wheel } from "react-custom-roulette";
 import Loader from "../../components/Loader";
 import PlayerProfileModal from "../../components/PlayerProfileModal";
 import ConfettiExplosion from "react-confetti-explosion";
+import WithOffcanvas from "../../components/WithOffcanvas";
+import TeamBalancesForAuction from "./TeamBalancesForAuction";
+import { Alert } from "react-bootstrap";
+import toast from "react-hot-toast";
 
 function Auction() {
     const { selectedLeague } = useLeagueState();
@@ -20,6 +24,7 @@ function Auction() {
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [showProfile, setShowProfile] = useState(false);
     const [isExploding, setIsExploding] = useState(false);
+    const [isUnsoldAuction, setIsUnsoldAuction] = useState(false);
 
     const fetchAuctionData = async () => {
         setLoading(true);
@@ -28,7 +33,7 @@ function Auction() {
                 `${endpoints.auction.playerIds}${leagueDetails.leagueId}`
             );
             const teamResponse = await axios.get(
-                `${endpoints.team.list}${leagueDetails.leagueId}`
+                `${endpoints.team.listWithPlayerCount}${leagueDetails.leagueId}`
             );
             setTeamData(teamResponse.data.responseData.data);
             const data = response.data.responseData;
@@ -38,6 +43,7 @@ function Auction() {
                 option: item.playerId.toString(), // Convert to string for wheel display
             }));
             setPlayerIds(ids);
+            setIsUnsoldAuction(response.data.isUnsoldList);
         } catch (err) {
             console.error("Error fetching auction data:", err);
         } finally {
@@ -61,6 +67,12 @@ function Auction() {
 
     const handleSpinClick = () => {
         if (playerIds.length === 0) return;
+        // if (teams.length !== Number(leagueDetails.totalTeams)) {
+        //     toast.error(
+        //         `To begin the auction, please ensure that all ${leagueDetails.totalTeams} teams are added.`
+        //     );
+        //     return;
+        // }
         const randomIndex = Math.floor(Math.random() * playerIds.length);
         setPrizeNumber(randomIndex);
         setMustSpin(true);
@@ -80,6 +92,13 @@ function Auction() {
     const closeModal = () => {
         setShowProfile(false);
     };
+    const data = teams?.map((item) => ({
+        teamName: item?.teamName,
+        maxAmountForBid: item?.maxAmountForBid,
+        balanceAmount: item?.balanceAmount,
+        maxAmountPerPlayer: item?.maxAmountPerPlayer,
+        numberOfPlayers: item?.playerCount,
+    }));
 
     return (
         <div
@@ -89,9 +108,13 @@ function Auction() {
                 justifyContent: "center",
             }}
         >
-            <div style={{ width: "100%" }}>
+            <div
+                style={{
+                    width: "100%",
+                }}
+            >
                 {loading && <Loader />}
-                {!loading && playerIds.length > 0 ? (
+                {playerIds.length > 0 && teams.length > 0 ? (
                     <>
                         {isExploding && (
                             <ConfettiExplosion
@@ -110,8 +133,34 @@ function Auction() {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
+                                position: "relative",
                             }}
                         >
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    top: 20,
+                                    left: 10,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    width: "98%",
+                                }}
+                            >
+                                <WithOffcanvas
+                                    offcanvasBody={
+                                        <TeamBalancesForAuction data={data} />
+                                    }
+                                    style={{ width: "50vw" }}
+                                >
+                                    View Balance
+                                </WithOffcanvas>
+                                {isUnsoldAuction && (
+                                    <Alert variant="warning">
+                                        The curtain rises on the Unsold Auction!
+                                    </Alert>
+                                )}
+                            </div>
                             <Wheel
                                 mustStartSpinning={mustSpin}
                                 prizeNumber={prizeNumber}
@@ -130,6 +179,7 @@ function Auction() {
                                 innerBorderWidth={10}
                                 outerBorderWidth={0}
                                 perpendicularText
+                                spinDuration={0.5}
                             />
                         </div>
                         <div
@@ -156,18 +206,6 @@ function Auction() {
                             >
                                 Spin
                             </button>
-                            {/* {selectedPlayer && (
-                                <div style={{ marginTop: 20 }}>
-                                    <p>
-                                        Selected Player ID:{" "}
-                                        <strong>{selectedPlayer.playerId}</strong>
-                                    </p>
-                                    <p>
-                                        Player Name:{" "}
-                                        <strong>{selectedPlayer.playerName}</strong>
-                                    </p>
-                                </div>
-                            )} */}
                         </div>
 
                         <PlayerProfileModal
@@ -179,8 +217,52 @@ function Auction() {
                             setIsExploding={setIsExploding}
                         />
                     </>
+                ) : playerIds.length === 0 &&
+                    Number(leagueDetails.playerCount) === 0 ? (
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "80vh",
+                        }}
+                    >
+                        <Alert variant="danger">
+                            Uh-oh! Players or teams are missing. Double-check
+                            and add them.
+                        </Alert>
+                    </div>
                 ) : (
-                    !loading && <p>No player IDs available.</p>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "80vh",
+                        }}
+                    >
+                        <Alert
+                            variant="success"
+                            style={{
+                                width: "30%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <span
+                                style={{
+                                    color: "#8925f5",
+                                    fontSize: 18,
+                                    fontWeight: 700,
+                                    paddingRight: 5,
+                                }}
+                            >
+                                {leagueDetails.leagueFullName.toUpperCase()}
+                            </span>{" "}
+                            AUCTION COMPLETED
+                        </Alert>
+                    </div>
                 )}
             </div>
         </div>

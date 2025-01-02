@@ -72,7 +72,7 @@ function BulkUpload({
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         ) {
             axios
-                .post(`${endpoints.playerList.upload}?league_id=${leagueDetails.leagueId}`, formData, {
+                .post(`${endpoints.playerList.upload}?leagueId=${leagueDetails.leagueId}&leagueName=${leagueDetails.leagueName}`, formData, {
                     timeout: 90000,
                     // onUploadProgress: (progressEvent) => {
                     //     // Calculate upload progress
@@ -87,10 +87,11 @@ function BulkUpload({
                     toast.success('Players added');
                     setUploadProgress(0)
                     closeModal();
+                    afterUpload();
                 })
                 .catch((error) => {
                     console.log(error);
-                    toast.error(error.response.data.statusText);
+                    toast.error(error?.response?.data?.statusText || 'error on upload');
                     setLoading(false);
                     setUploadProgress(0)
                 });
@@ -138,14 +139,14 @@ function BulkUpload({
                     onExiting: () => {
                         setSelectedFile(null);
                         setFileError(false);
-                        afterUpload();
+                        // afterUpload();
                     },
                 }}
                 renderModalBody={(closeModal) => {
                     return (<InitialBody
                         closeModal={() => {
                             closeModal();
-                            afterUpload();
+                            // afterUpload();
                             setSelectedFile(null);
                             setFileError(false);
                         }}

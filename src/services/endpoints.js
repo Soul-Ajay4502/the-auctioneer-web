@@ -12,6 +12,7 @@ const endpoints = Object.freeze({
         list: "/team/",
         add: "/team/add",
         update: "/team/update",
+        listWithPlayerCount: "/team/listWithPlayerCount/",
     },
     playerList: {
         list: "/players/",
@@ -19,13 +20,15 @@ const endpoints = Object.freeze({
         update: "/players/update",
         downloadUploadTemplate: '',
         upload: '/template/upload',
+        listByTeam: '/team/player/'
     },
     auction: {
         playerIds: '/players/playerIds/'
     },
     dashboard: {
         counts: 'dashboard/',
-        topPlayers: 'dashboard/topValuePlayers'
+        topPlayers: 'dashboard/topValuePlayers',
+        leagues: 'dashboard/leagues'
     }
 });
 

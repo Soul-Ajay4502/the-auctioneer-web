@@ -8,7 +8,7 @@ import endpoints from "../../services/endpoints";
 import viewProps from "../viewprops";
 import TeamForm from "./forms/TeamForm";
 import { ReactComponent as Edit } from "../../assets/icons/Edit.svg";
-import { Image } from "react-bootstrap";
+import { Badge, Image } from "react-bootstrap";
 import defaultAvatar from "../../assets/img/cricket.png";
 import ShowDpModal from "../../components/ShowDpModal";
 import team from "../../assets/img/team.png";
@@ -137,20 +137,25 @@ function TeamList() {
                     justifyContent: "center",
                 }}
             >
-                <div style={{ width: "79%" }}>
+                <div style={{ width: "97%" }}>
                     <PaginatedTable
                         getDataUrl={`${endpoints.team.list}${leagueDetails.leagueId}`}
                         addBtnLabel="create Teams"
-                        name={
+                        headname={
                             <LeagueNameFormatter
-                                name={leagueDetails.leagueName}
-                                fullName={leagueDetails.leagueFullName}
+                                name={leagueDetails?.leagueName}
+                                fullName={leagueDetails?.leagueFullName}
+                                teamCount={leagueDetails?.teamCount}
+                                showBadge={Number(leagueDetails?.playerCount) === Number(leagueDetails?.totalPlayers)}
+
                             />
                         }
                         Form={TeamForm}
                         endpoints={endpoints.team}
                         {...viewProps.teamDetails}
                         cellModifier={cellModifier}
+                        pinnedFieldRelevant='teamName'
+
                     />
                 </div>
             </div>
@@ -160,7 +165,7 @@ function TeamList() {
 
 export default TeamList;
 
-const LeagueNameFormatter = ({ name, fullName }) => {
+const LeagueNameFormatter = ({ name, fullName, teamCount, showBadge }) => {
     return (
         <div>
             <div style={{ display: "flex" }}>
@@ -169,7 +174,10 @@ const LeagueNameFormatter = ({ name, fullName }) => {
                 </p>
                 <p style={{ marginBottom: 0 }}>-TEAM LIST</p>
             </div>
-            <p style={{ fontSize: 12, textAlign: "center" }}>{fullName}</p>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                <p style={{ fontSize: 12, textAlign: "center" }}>{fullName}</p>
+                {showBadge && <Badge bg="success" style={{ borderRadius: 200, padding: '10px 12px ' }} title="Number of teams">{teamCount}</Badge>
+                }</div>
         </div>
     );
 };
