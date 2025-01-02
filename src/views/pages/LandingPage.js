@@ -60,7 +60,7 @@ function LandingPage() {
                             ([key, value], index) => (
                                 <Col key={index} md="3">
                                     <Chip
-                                        bg={`radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)`}
+                                        bg={`radial-gradient(circle, rgba(51,36,43,1) 0%, rgba(36,110,195,1) 100%)`}
                                         title={capitalizeCamelCase(key)}
                                     >
                                         {value || 0}

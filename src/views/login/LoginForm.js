@@ -3,7 +3,9 @@ import { useAuthenticationState } from "../../context/Auth.context";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Spinner } from "react-bootstrap";
-
+import WithOffcanvas from "../../components/WithOffcanvas";
+import SignUpForm from "./SignUpForm";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -15,7 +17,7 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const userCredential = { USERNAME: email, PASSWORD: password }
+        const userCredential = { USERNAME: email, PASSWORD: password };
         setLoggingIn(true);
 
         login(userCredential)
@@ -27,7 +29,7 @@ const LoginForm = () => {
             .catch((err) => {
                 setLoggingIn(false);
                 toast.error(extractErrorFromRes(err));
-            })
+            });
         // Add your form submission logic here
     };
 
@@ -104,6 +106,16 @@ const LoginForm = () => {
                         required
                     />
                 </div>
+                <WithOffcanvas
+                    backdrop="static"
+                    placement="start"
+                    isButton={false}
+                    childStyle={{ color: "blue", cursor: "pointer" }}
+                    offcanvasBody={<ForgotPasswordForm />}
+                    style={{ width: "50vw" }}
+                >
+                    <div style={{ paddingBottom: 5 }}>Lost the Magic Key ?</div>
+                </WithOffcanvas>
                 <button
                     type="submit"
                     style={{
@@ -115,11 +127,36 @@ const LoginForm = () => {
                         borderRadius: "4px",
                         fontSize: "16px",
                         cursor: "pointer",
-                        height: 50
+                        height: 50,
                     }}
                 >
-                    {loggingIn ? <Spinner animation="border" variant="light" /> : 'Login'}
+                    {loggingIn ? (
+                        <Spinner animation="border" variant="light" />
+                    ) : (
+                        "Login"
+                    )}
                 </button>
+                <WithOffcanvas
+                    isButton={false}
+                    backdrop="static"
+                    placement="end"
+                    offcanvasBody={<SignUpForm />}
+                    style={{ width: "50vw" }}
+                    childStyle={{ cursor: "pointer" }}
+                >
+                    <div
+                        style={{
+                            width: "98%",
+                            display: "flex",
+                            justifyContent: "end",
+                            color: "blue",
+                            marginTop: 5
+                        }}
+                    >
+                        <div style={{ color: "#000", paddingRight: 5, }}>Not a member?</div>Swing
+                        Into Action
+                    </div>
+                </WithOffcanvas>
             </form>
         </div>
     );
@@ -128,18 +165,16 @@ const LoginForm = () => {
 export default LoginForm;
 
 function extractErrorFromRes(error) {
-    let errorMessage = '';
+    let errorMessage = "";
 
     if (!!error.response) {
         errorMessage =
-            error.response.data?.statusText || 'Something went wrong';
+            error.response.data?.statusText || "Something went wrong";
     }
 
     if (!errorMessage) {
-        errorMessage = 'Something went wrong :(';
+        errorMessage = "Something went wrong :(";
     }
 
     return errorMessage;
 }
-
-
