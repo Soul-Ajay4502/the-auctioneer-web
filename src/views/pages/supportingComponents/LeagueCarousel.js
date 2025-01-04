@@ -134,7 +134,7 @@ const LeagueCarousel = () => {
                 ))}
             </div>
             {/* Pagination Controls */}
-            <div className="pagination-controls text-center mt-3">
+            {data.length > 0 && <div className="pagination-controls text-center mt-3">
                 <Button
                     style={{
                         background: "blue",
@@ -163,7 +163,7 @@ const LeagueCarousel = () => {
                 >
                     Next
                 </Button>
-            </div>
+            </div>}
         </div>
     );
 };

@@ -2,6 +2,8 @@ const endpoints = Object.freeze({
     authentication: {
         login: "/auth/login",
         token: "/auth/token ",
+        getOtp: "/auth/get-otp ",
+        register: '/auth/register'
     },
     league: {
         list: "/league",

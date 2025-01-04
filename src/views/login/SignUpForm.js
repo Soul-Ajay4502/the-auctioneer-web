@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button, Spinner } from "react-bootstrap";
+import axios from "axios";
+import endpoints from "../../services/endpoints";
 
 const SignUpForm = () => {
     const [formData, setFormData] = useState({
@@ -27,11 +29,12 @@ const SignUpForm = () => {
         setLoading(true);
         try {
             // Replace with your API call to get OTP
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+            // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+            await axios.post(endpoints.authentication.getOtp, formData)
             toast.success("OTP sent successfully!");
             setOtpSent(true);
         } catch (error) {
-            toast.error("Failed to send OTP. Please try again.");
+            toast.error(error.response.data.statusText || "Failed to send OTP. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -42,8 +45,9 @@ const SignUpForm = () => {
         setLoading(true);
         try {
             // Replace with your API call to verify OTP and create account
-            const payload = { ...formData };
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+            // const payload = { ...formData };
+            // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+            await axios.post(endpoints.authentication.register, formData)
             toast.success("Account created successfully!");
             navigate("/login");
         } catch (error) {
