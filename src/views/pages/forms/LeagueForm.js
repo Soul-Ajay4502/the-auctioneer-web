@@ -217,14 +217,14 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                     <Row>
                         <div
                             style={{
-                                textAlign: 'center',
-                                color: 'white',
-                                backgroundColor: 'darkred',
-                                padding: '10px',
-                                borderRadius: '8px',
-                                fontSize: '18px',
-                                fontWeight: 'bold',
-                                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)'
+                                textAlign: "center",
+                                color: "white",
+                                backgroundColor: "darkred",
+                                padding: "10px",
+                                borderRadius: "8px",
+                                fontSize: "18px",
+                                fontWeight: "bold",
+                                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
                             }}
                         >
                             Data Needed For Auction - Handle With Care
@@ -232,13 +232,13 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
 
                         <div
                             style={{
-                                textAlign: 'left',
-                                color: 'darkred',
-                                marginTop: '10px',
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                borderLeft: '4px solid darkred',
-                                paddingLeft: '8px',
+                                textAlign: "left",
+                                color: "darkred",
+                                marginTop: "10px",
+                                fontSize: "16px",
+                                fontWeight: "bold",
+                                borderLeft: "4px solid darkred",
+                                paddingLeft: "8px",
                             }}
                         >
                             Hint : use comma separated in the input fields
@@ -246,35 +246,33 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
 
                         <div
                             style={{
-                                textAlign: 'left',
-                                color: 'black',
-                                marginTop: '5px',
-                                fontSize: '14px',
-                                padding: '8px',
-                                backgroundColor: '#f8d7da',
-                                borderRadius: '6px',
-                                border: '1px solid #f5c2c7',
+                                textAlign: "left",
+                                color: "black",
+                                marginTop: "5px",
+                                fontSize: "14px",
+                                padding: "8px",
+                                backgroundColor: "#f8d7da",
+                                borderRadius: "6px",
+                                border: "1px solid #f5c2c7",
                             }}
                         >
-                            Eg: Auction Break Points: 500, 1000, 1500
+                            Eg: Auction Break Points: 0, 500, 1000, 1500
                         </div>
 
                         <div
                             style={{
-                                textAlign: 'left',
-                                color: 'black',
-                                marginTop: '5px',
-                                fontSize: '14px',
-                                padding: '8px',
-                                backgroundColor: '#f8d7da',
-                                borderRadius: '6px',
-                                border: '1px solid #f5c2c7',
+                                textAlign: "left",
+                                color: "black",
+                                marginTop: "5px",
+                                fontSize: "14px",
+                                padding: "8px",
+                                backgroundColor: "#f8d7da",
+                                borderRadius: "6px",
+                                border: "1px solid #f5c2c7",
                             }}
                         >
-                            Eg: Auction Increment Points: 100, 200, 500
+                            Eg: Auction Increment Points: 50, 100, 250, 500
                         </div>
-
-
 
                         <Col md={6}>
                             <FormikControl

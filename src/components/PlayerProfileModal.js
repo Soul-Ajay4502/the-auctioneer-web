@@ -85,12 +85,18 @@ function PlayerProfileModal({
         breakPoint,
         increment: incrementsArray[index],
     }));
-    console.log('BREAK_POINTS_ARRAY', BREAK_POINTS_ARRAY);
 
     useEffect(() => {
-        const match = BREAK_POINTS_ARRAY.find(({ breakPoint }) => playerValue === breakPoint);
-        if (match) setBidIncrement(match.increment);
+        const match = BREAK_POINTS_ARRAY.find(({ breakPoint }, index, array) => {
+            const nextBreakPoint = array[index + 1]?.breakPoint || leagueDetails.bidAmountPerTeam;
+            return playerValue >= breakPoint && playerValue < nextBreakPoint;
+        });
+
+        if (match) {
+            setBidIncrement(match.increment);
+        }
     }, [playerValue]);
+
 
 
     const tagStyle = {
