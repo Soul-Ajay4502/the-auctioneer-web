@@ -30,7 +30,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
             date1.getMonth() === date2.getMonth() &&
             date1.getDate() === date2.getDate()
         );
-    }
+    };
 
     const initialFormValues = updateValues || {
         leagueName: "",
@@ -44,7 +44,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
         registrationFee: "",
         createdBy: "",
         registrationEndDate: "",
-        playerBasePrice: ""
+        playerBasePrice: "",
     };
 
     return (
@@ -61,19 +61,19 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                     ),
                 totalPlayers: Yup.string()
                     .matches(/^\d*$/, "Must be a number")
-                    .nullable(),
+                    .required(),
                 totalTeams: Yup.string()
                     .matches(/^\d+$/, "Must be a number")
                     .required("Total teams is required."),
                 hasUnsold: Yup.string().oneOf(["yes", "no"], "Invalid value"),
-                leagueStartDate: Yup.date().nullable(),
-                leagueEndDate: Yup.date().nullable(),
+                leagueStartDate: Yup.date().required(),
+                leagueEndDate: Yup.date().required(),
                 registrationFee: Yup.string()
                     .matches(/^\d*$/, "Must be a number")
-                    .nullable(),
-                registrationEndDate: Yup.date()
-                    .nullable()
-                    .required("Registration end date is required."),
+                    .required(),
+                registrationEndDate: Yup.date().required(
+                    "Registration end date is required."
+                ),
             })}
             onSubmit={submitHandler}
         >
@@ -93,6 +93,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 control="input"
                                 label="League Full Name"
                                 name="leagueFullName"
+                                required
                             />
                         </Col>
                     </Row>
@@ -113,14 +114,18 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 label="Total Players"
                                 name="totalPlayers"
                                 type="number"
-                            /></Col>
+                                required
+                            />
+                        </Col>
                         <Col md={6}>
                             <FormikControl
                                 control="input"
                                 label="Player Base Price"
                                 name="playerBasePrice"
                                 type="number"
-                            /></Col>
+                                required
+                            />
+                        </Col>
                     </Row>
                     <Row>
                         <Col md={6}>
@@ -153,6 +158,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 type="date"
                                 label="League Start Date"
                                 name="leagueStartDate"
+                                required
                             />
                         </Col>
                         <Col md={6}>
@@ -161,6 +167,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 type="date"
                                 label="League End Date"
                                 name="leagueEndDate"
+                                required
                             />
                         </Col>
                     </Row>
@@ -171,6 +178,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 label="Registration Fee"
                                 name="registrationFee"
                                 type="number"
+                                required
                             />
                         </Col>
                         <Col md={6}>
@@ -190,6 +198,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 type="date"
                                 label="Auction Start Date"
                                 name="auctionStartDate"
+                                required
                             />
                         </Col>
                         <Col md={6}>
@@ -199,7 +208,88 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 label="Total Bid Amount Per Team"
                                 name="bidAmountPerTeam"
                                 type="number"
-                                disabled={isSameDate(updateValues?.auctionStartDate)}
+                                disabled={isSameDate(
+                                    updateValues?.auctionStartDate
+                                )}
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <div
+                            style={{
+                                textAlign: 'center',
+                                color: 'white',
+                                backgroundColor: 'darkred',
+                                padding: '10px',
+                                borderRadius: '8px',
+                                fontSize: '18px',
+                                fontWeight: 'bold',
+                                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)'
+                            }}
+                        >
+                            Data Needed For Auction - Handle With Care
+                        </div>
+
+                        <div
+                            style={{
+                                textAlign: 'left',
+                                color: 'darkred',
+                                marginTop: '10px',
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                borderLeft: '4px solid darkred',
+                                paddingLeft: '8px',
+                            }}
+                        >
+                            Hint : use comma separated in the input fields
+                        </div>
+
+                        <div
+                            style={{
+                                textAlign: 'left',
+                                color: 'black',
+                                marginTop: '5px',
+                                fontSize: '14px',
+                                padding: '8px',
+                                backgroundColor: '#f8d7da',
+                                borderRadius: '6px',
+                                border: '1px solid #f5c2c7',
+                            }}
+                        >
+                            Eg: Auction Break Points: 500, 1000, 1500
+                        </div>
+
+                        <div
+                            style={{
+                                textAlign: 'left',
+                                color: 'black',
+                                marginTop: '5px',
+                                fontSize: '14px',
+                                padding: '8px',
+                                backgroundColor: '#f8d7da',
+                                borderRadius: '6px',
+                                border: '1px solid #f5c2c7',
+                            }}
+                        >
+                            Eg: Auction Increment Points: 100, 200, 500
+                        </div>
+
+
+
+                        <Col md={6}>
+                            <FormikControl
+                                control="input"
+                                label="Auction Break Points"
+                                name="breakPoints"
+                                required
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <FormikControl
+                                control="input"
+                                required
+                                label="Auction Increments"
+                                name="increments"
                             />
                         </Col>
                     </Row>

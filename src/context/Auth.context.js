@@ -10,6 +10,7 @@ import React, {
 import { useLocation, useNavigate } from "react-router-dom";
 import endpoints from "../services/endpoints";
 import Loader from "../components/Loader";
+import toast from "react-hot-toast";
 
 const AuthenticationContext = createContext();
 
@@ -130,10 +131,23 @@ const AuthenticationProvider = (props) => {
         localStorage.setItem("refreshToken", response.data.refreshToken);
     }, []);
 
-    const logout = useCallback(() => {
-        setUser({});
-        localStorage.clear();
-        navigate("login");
+    const logout = useCallback(async () => {
+        try {
+            let refreshToken = localStorage.getItem("refreshToken");
+            if (!refreshToken) {
+                throw new Error("Refresh token not found.");
+            }
+
+            await axios.post(endpoints.authentication.logout, { refreshToken });
+
+            setUser({});
+            localStorage.clear();
+            navigate("login");
+            toast.success('Logout Success')
+        } catch (error) {
+            console.error("Error during logout:", error);
+            // Optionally, show an error message to the user
+        }
     }, []);
 
     const value = useMemo(

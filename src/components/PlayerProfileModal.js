@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CloseButton, Modal, Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useLeagueState } from "../context/League.context";
@@ -20,6 +20,12 @@ function PlayerProfileModal({
     const initialAmount = 5000;
     const { selectedLeague } = useLeagueState();
     const { leagueDetails } = selectedLeague;
+    const breakPointsArray = leagueDetails.breakPoints.split(',').map(Number);
+    const incrementsArray = leagueDetails.increments.split(',').map(Number);
+
+
+
+
     const lightColors = [
         "#f0e68c",
         "#ffd700",
@@ -74,6 +80,18 @@ function PlayerProfileModal({
         playerValue: 0,
     });
     const [playerValue, setPlayerValue] = useState(0);
+
+    const BREAK_POINTS_ARRAY = breakPointsArray.map((breakPoint, index) => ({
+        breakPoint,
+        increment: incrementsArray[index],
+    }));
+    console.log('BREAK_POINTS_ARRAY', BREAK_POINTS_ARRAY);
+
+    useEffect(() => {
+        const match = BREAK_POINTS_ARRAY.find(({ breakPoint }) => playerValue === breakPoint);
+        if (match) setBidIncrement(match.increment);
+    }, [playerValue]);
+
 
     const tagStyle = {
         display: "flex",

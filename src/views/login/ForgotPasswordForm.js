@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
+import axios from "axios";
+import endpoints from "../../services/endpoints";
+import { ReactComponent as EyeOpen } from "../../assets/icons/EyeOpen.svg";
+import { ReactComponent as EyeClose } from "../../assets/icons/EyeClose.svg";
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({ handleClose }) => {
     const [formData, setFormData] = useState({
         email: "",
         otp: "",
@@ -10,6 +14,7 @@ const ForgotPasswordForm = () => {
     });
     const [otpSent, setOtpSent] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,26 +28,25 @@ const ForgotPasswordForm = () => {
         setLoading(true);
         try {
             // Replace with your API call to send OTP
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+            await axios.post(endpoints.authentication.getOtpForReset, formData)
             toast.success("OTP sent to your email!");
             setOtpSent(true);
         } catch (error) {
-            toast.error("Failed to send OTP. Please try again.");
+            toast.error(error.response.data.statusText || "Failed to send OTP. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleResetPassword = async (e) => {
-        e.preventDefault();
+    const handleResetPassword = async () => {
         setLoading(true);
         try {
             // Replace with your API call to reset the password
-            const payload = { ...formData };
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+            await axios.post(endpoints.authentication.resetPassword, formData)
             toast.success("Password reset successfully!");
+            handleClose()
         } catch (error) {
-            toast.error("Failed to reset password. Please try again.");
+            toast.error(error.response.data.statusText || "Failed to reset password. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -113,7 +117,7 @@ const ForgotPasswordForm = () => {
                                 required
                             />
                         </div>
-                        <div style={{ marginBottom: "15px" }}>
+                        <div style={{ marginBottom: "15px", position: 'relative' }}>
                             <label
                                 htmlFor="newPassword"
                                 style={{ display: "block", marginBottom: "5px" }}
@@ -121,7 +125,7 @@ const ForgotPasswordForm = () => {
                                 New Password:
                             </label>
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 id="newPassword"
                                 name="newPassword"
                                 value={formData.newPassword}
@@ -135,12 +139,35 @@ const ForgotPasswordForm = () => {
                                 }}
                                 required
                             />
+                            <span
+                                onClick={() =>
+                                    setShowPassword(!showPassword)
+                                }
+                                style={{
+                                    position: "absolute",
+                                    top: "40%",
+                                    right: "25px",
+                                    cursor: "pointer",
+                                    color: "#555",
+                                    fontSize: "16px",
+                                }}
+                                title={
+                                    showPassword
+                                        ? "Hide Password"
+                                        : "Show Password"
+                                }
+                            >
+                                {showPassword ? (
+                                    <EyeOpen />
+                                ) : (
+                                    <EyeClose />
+                                )}
+                            </span>
                         </div>
                     </>
                 )}
                 {!otpSent ? (
-                    <button
-                        type="button"
+                    <Button
                         onClick={handleGetOtp}
                         style={{
                             width: "97%",
@@ -153,13 +180,13 @@ const ForgotPasswordForm = () => {
                             cursor: "pointer",
                             height: 50,
                         }}
-                        disabled={loading}
+                        disabled={loading || !formData.email}
                     >
                         {loading ? <Spinner animation="border" variant="light" /> : "Get OTP"}
-                    </button>
+                    </Button>
                 ) : (
-                    <button
-                        type="submit"
+                    <Button
+                        onClick={handleResetPassword}
                         style={{
                             width: "97%",
                             padding: "10px",
@@ -174,7 +201,7 @@ const ForgotPasswordForm = () => {
                         disabled={loading || !formData.otp || !formData.newPassword}
                     >
                         {loading ? <Spinner animation="border" variant="light" /> : "Reset Password"}
-                    </button>
+                    </Button>
                 )}
             </form>
         </div>

@@ -8,13 +8,16 @@ import { setLocale } from "yup";
 import { useAuthenticationState } from "../context/Auth.context.js";
 import LeagueMenus from "../components/LeagueMenus.js";
 // import Loader from "../components/Loader.js";
+import { ReactComponent as Logout } from '../assets/icons/Logout.svg'
+import WithModal from "../components/WithModal.js";
+import { Button } from "react-bootstrap";
 
 const Dashboard = (props) => {
     const mainContent = React.useRef(null);
     const location = useLocation();
     const showTabsOn = ["/league-list", "/"];
     const isTabVisible = showTabsOn.includes(location.pathname);
-    const { user } = useAuthenticationState();
+    const { user, logout } = useAuthenticationState();
 
     useEffect(() => {
         document.body.style.backgroundColor = "#FAFAFE";
@@ -96,7 +99,81 @@ const Dashboard = (props) => {
                         >
                             {user.displayName?.toUpperCase()}
                         </div>
+                        <WithModal
+                            showCloseBtn={false}
+                            renderModalBody={(closeModal) => {
+                                return (
+                                    <>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    fontSize: "18px",
+                                                    fontWeight: "bold",
+                                                    marginBottom: "20px",
+                                                    color: "#333",
+                                                }}
+                                            >
+                                                Do you want to Logout?
+                                            </div>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    width: "100%",
+                                                }}
+                                            >
+                                                <button
+                                                    onClick={logout}
+                                                    style={{
+                                                        padding: "10px 20px",
+                                                        backgroundColor: "#ff4d4f",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        borderRadius: "5px",
+                                                        fontSize: "14px",
+                                                        cursor: "pointer",
+                                                        width: '48%'
+                                                    }}
+                                                >
+                                                    YES
+                                                </button>
+                                                <button
+                                                    onClick={closeModal}
+                                                    style={{
+                                                        padding: "10px 20px",
+                                                        backgroundColor: "#4caf50",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        borderRadius: "5px",
+                                                        fontSize: "14px",
+                                                        cursor: "pointer",
+                                                        width: '48%'
+                                                    }}
+                                                >
+                                                    NO
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </>
+
+                                )
+                            }}
+                        >
+                            <Logout style={{ marginLeft: 10, color: 'red', width: 30, height: 60, cursor: 'pointer' }} title="Logout"
+                            // onClick={logout} 
+                            />
+                        </WithModal>
                     </div>
+
                 </div>
 
             </div>

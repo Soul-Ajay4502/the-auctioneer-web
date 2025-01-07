@@ -20,7 +20,7 @@ function WithOffcanvas({ children, offcanvasBody, isButton = true, childStyle = 
                     {/* <Offcanvas.Title>Offcanvas</Offcanvas.Title> */}
                 </Offcanvas.Header>
                 <Offcanvas.Body style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    {offcanvasBody}
+                    {offcanvasBody(handleClose)}
                 </Offcanvas.Body>
             </Offcanvas>
         </>

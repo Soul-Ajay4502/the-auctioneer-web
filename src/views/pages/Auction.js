@@ -9,7 +9,6 @@ import ConfettiExplosion from "react-confetti-explosion";
 import WithOffcanvas from "../../components/WithOffcanvas";
 import TeamBalancesForAuction from "./TeamBalancesForAuction";
 import { Alert } from "react-bootstrap";
-import toast from "react-hot-toast";
 
 function Auction() {
     const { selectedLeague } = useLeagueState();
@@ -148,7 +147,7 @@ function Auction() {
                                 }}
                             >
                                 <WithOffcanvas
-                                    offcanvasBody={
+                                    offcanvasBody={() =>
                                         <TeamBalancesForAuction data={data} />
                                     }
                                     style={{ width: "50vw" }}

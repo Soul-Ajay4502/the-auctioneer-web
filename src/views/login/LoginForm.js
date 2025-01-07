@@ -111,7 +111,7 @@ const LoginForm = () => {
                     placement="start"
                     isButton={false}
                     childStyle={{ color: "blue", cursor: "pointer" }}
-                    offcanvasBody={<ForgotPasswordForm />}
+                    offcanvasBody={(handleClose) => <ForgotPasswordForm handleClose={handleClose} />}
                     style={{ width: "50vw" }}
                 >
                     <div style={{ paddingBottom: 5 }}>Lost the Magic Key ?</div>
@@ -140,7 +140,9 @@ const LoginForm = () => {
                     isButton={false}
                     backdrop="static"
                     placement="end"
-                    offcanvasBody={<SignUpForm />}
+                    // offcanvasBody={<SignUpForm />}
+                    offcanvasBody={(handleClose) => <SignUpForm handleClose={handleClose} />}
+
                     style={{ width: "50vw" }}
                     childStyle={{ cursor: "pointer" }}
                 >

@@ -16,6 +16,8 @@ const viewProps = Object.freeze({
             "HAS UNSOLD",
             "REGISTERED PLAYERS",
             "CREATED TEAMS",
+            "BREAK POINTS",
+            "INCREMENTS",
             "EDIT",
         ],
         relevants: [
@@ -33,6 +35,8 @@ const viewProps = Object.freeze({
             "hasUnsold",
             "playerCount",
             "teamCount",
+            "breakPoints",
+            "increments",
             "edit",
         ],
     },

@@ -9,6 +9,7 @@ function WithModal({
     children,
     disabled,
     disableHeader = false,
+    showCloseBtn = true
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -53,14 +54,14 @@ function WithModal({
                         </span>
                     </div>
                 )}
-                <CloseButton
+                {showCloseBtn && <CloseButton
                     onClick={closeModal}
                     style={{
                         marginTop: 8,
                         width: '6%',
                         marginLeft: 'auto',
                     }}
-                />
+                />}
 
                 <Modal.Body className="p-4 p-md-4">
                     {renderModalBody(closeModal)}
