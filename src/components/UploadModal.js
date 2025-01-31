@@ -1,36 +1,36 @@
-import { Button, Collapse } from 'react-bootstrap';
-import { ReactComponent as DownloadIcon } from '../assets/icons/downloadIcon.svg';
-import { ReactComponent as CloseIcon } from '../assets/icons/BulkUploadCloseIcon.svg';
-import UploadSelector from './UploadSelector';
+import { Button, Collapse } from "react-bootstrap";
+import { ReactComponent as DownloadIcon } from "../assets/icons/downloadIcon.svg";
+import { ReactComponent as CloseIcon } from "../assets/icons/BulkUploadCloseIcon.svg";
+import UploadSelector from "./UploadSelector";
 
 const DisplaySelectedFile = ({ selectedFile, onclose }) => {
     return (
         <div
             style={{
-                display: 'flex',
-                border: '1px solid #E7E7E7',
-                borderRadius: '10px',
-                padding: '16px',
-                marginBottom: '10px',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                display: "flex",
+                border: "1px solid #E7E7E7",
+                borderRadius: "10px",
+                padding: "16px",
+                marginBottom: "10px",
+                justifyContent: "space-between",
+                alignItems: "center",
             }}
         >
-            <div style={{ textAlign: 'left' }}>
+            <div style={{ textAlign: "left" }}>
                 <div
                     style={{
-                        color: '#0B0B0B',
+                        color: "#0B0B0B",
                         fontWeight: 600,
-                        fontSize: '12px',
+                        fontSize: "12px",
                     }}
                 >
                     {selectedFile?.name}
                 </div>
                 <div
                     style={{
-                        color: '#6D6D6D',
+                        color: "#6D6D6D",
                         fontWeight: 400,
-                        fontSize: '12px',
+                        fontSize: "12px",
                     }}
                 >
                     {byteConverter(selectedFile?.size).mb}
@@ -52,22 +52,35 @@ const UploadModal = ({
 }) => {
     return (
         <div>
-            <div style={{ background: '#3d9be3', width: 60, borderRadius: 3 }} onClick={downloadTemplate} type="button">
-                <span
-                    className="text-primary"
-                >
+            <div
+                style={{ background: "#3d9be3", width: 60, borderRadius: 3 }}
+                onClick={downloadTemplate}
+                type="button"
+            >
+                <span className="text-primary">
                     <DownloadIcon />
                 </span>
                 <span
                     style={{
-                        color: '#FFF',
+                        color: "#FFF",
                         fontWeight: 500,
-                        fontSize: '13px',
-                        paddingLeft: '4px',
+                        fontSize: "13px",
+                        padding: "4px",
                     }}
                 >
                     Excel
                 </span>
+            </div>
+            <div
+                style={{
+                    color: "red",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    paddingLeft: "4px",
+                }}
+            >
+                Please verify all users' locations and payments before
+                uploading.{" "}
             </div>
             <UploadSelector
                 onChange={(e) => {
@@ -87,11 +100,11 @@ const UploadModal = ({
             </Collapse>
             <div
                 style={{
-                    color: '#6D6D6D',
-                    fontSize: '10px',
+                    color: "#6D6D6D",
+                    fontSize: "10px",
                     fontWeight: 700,
-                    paddingTop: '5px',
-                    paddingBottom: '5px',
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
                 }}
             >
                 Note: only support .xlsx files
@@ -107,13 +120,13 @@ const UploadModal = ({
                     />
                     <div
                         style={{
-                            background: '#107BFF',
-                            color: '#EFEFEF',
-                            fontSize: '16px',
+                            background: "#107BFF",
+                            color: "#EFEFEF",
+                            fontSize: "16px",
                             fontWeight: 600,
-                            borderRadius: '8px',
-                            padding: '10px 18px 10px 18px',
-                            textAlign: 'center',
+                            borderRadius: "8px",
+                            padding: "10px 18px 10px 18px",
+                            textAlign: "center",
                         }}
                         role="button"
                         className="btnAnime"
@@ -127,15 +140,15 @@ const UploadModal = ({
 
                     <div
                         style={{
-                            background: '#FFF',
-                            color: '##344054',
-                            fontSize: '16px',
+                            background: "#FFF",
+                            color: "##344054",
+                            fontSize: "16px",
                             fontWeight: 600,
-                            borderRadius: '8px',
-                            border: '1px solid #D0D5DD',
-                            padding: '10px 18px 10px 18px',
-                            textAlign: 'center',
-                            marginTop: '10px',
+                            borderRadius: "8px",
+                            border: "1px solid #D0D5DD",
+                            padding: "10px 18px 10px 18px",
+                            textAlign: "center",
+                            marginTop: "10px",
                         }}
                         role="button"
                         onClick={() => {
@@ -156,5 +169,5 @@ export default UploadModal;
 function byteConverter(bytes) {
     const kb = bytes / 1024;
     const mb = kb / 1024;
-    return { kb: Math.round(kb) + 'kb', mb: mb.toFixed(2) + 'mb' };
+    return { kb: Math.round(kb) + "kb", mb: mb.toFixed(2) + "mb" };
 }

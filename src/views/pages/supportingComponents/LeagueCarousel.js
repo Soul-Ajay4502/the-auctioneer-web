@@ -58,7 +58,7 @@ const LeagueCarousel = () => {
         <div className="carousel-container" style={{ marginBottom: 30 }}>
             {/* Bootstrap Carousel */}
             <div style={{ display: "flex", gap: 10, width: "100%" }}>
-                {data.map((item, index) => (
+                {data?.map((item, index) => (
                     <div
                         key={item.id}
                         className="dynamic-item"
@@ -134,7 +134,7 @@ const LeagueCarousel = () => {
                 ))}
             </div>
             {/* Pagination Controls */}
-            {data.length > 0 && <div className="pagination-controls text-center mt-3">
+            {data?.length > 0 && <div className="pagination-controls text-center mt-3">
                 <Button
                     style={{
                         background: "blue",

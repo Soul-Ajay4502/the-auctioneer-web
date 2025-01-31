@@ -41,7 +41,7 @@ const AuthenticationProvider = (props) => {
         // axios.defaults.baseURL = 'http://20.40.50.105:5050/api'; //staging server
         axios.defaults.baseURL = "http://localhost:8090/api"; //local server
         // axios.defaults.baseURL = 'https://sdapi.kobleapp.in:5050/api'; //Sales demo
-        // axios.defaults.baseURL = 'http://192.168.1.41:5050/api';
+        // axios.defaults.baseURL = 'https://api.hacknetic.in/api';
         // axios.defaults.baseURL = 'https://devapi.kobleapp.in/api';
 
         const axiosId = axios.interceptors.response.use(

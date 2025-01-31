@@ -21,7 +21,7 @@ function TeamForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
             leagueId: leagueDetails?.leagueId,
             playerBasePrice: leagueDetails?.playerBasePrice,
             folderName: leagueDetails?.leagueName,
-            // maxAmountForBid:leagueDetails?.bidAmountPerTeam,
+            minimumPlayerCount: leagueDetails?.minimumPlayerCount,
         };
 
         if (body.teamLogo instanceof File) {

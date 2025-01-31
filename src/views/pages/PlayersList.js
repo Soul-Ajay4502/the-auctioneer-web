@@ -10,12 +10,16 @@ import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg";
 import ModalWrapper from "../../components/ModalWrapper";
 import PlayerForm from "./forms/PlayerForm";
 import { ReactComponent as Edit } from "../../assets/icons/Edit.svg";
+import { useAxiosGet } from "../../hooks/axiosHooks";
 
 
 
 function PlayerList() {
     const { selectedLeague } = useLeagueState();
     const { leagueDetails } = selectedLeague;
+    const fetchutils = useAxiosGet(`${endpoints.playerList.playerCount}${leagueDetails.leagueId}`);
+    const { response, reFetch: reFetchCount, loading } = fetchutils;
+    console.log('response', response[0]?.registeredPlayerCount);
 
     const cellModifier = {
         playerPhoto: ({ value }) => {
@@ -48,7 +52,8 @@ function PlayerList() {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 border: '1px solid grey',
-                                height: '5vh', overflow: 'hidden'
+                                height: '5vh', overflow: 'hidden',
+
                             }}
                         >
                             <Image
@@ -127,6 +132,7 @@ function PlayerList() {
                             onAfterSubmit={() => {
                                 closeModal();
                                 reFetch();
+                                reFetchCount();
                             }}
                             onCancel={closeModal}
                             endpoint={endpoints.playerList?.update}
@@ -149,8 +155,10 @@ function PlayerList() {
                     headname={<LeagueNameFormatter
                         name={leagueDetails.leagueName}
                         fullName={leagueDetails.leagueFullName}
-                        playerCount={leagueDetails?.playerCount}
-                        showBadge={Number(leagueDetails?.playerCount) === Number(leagueDetails?.totalPlayers)}
+                        // playerCount={leagueDetails?.playerCount}
+                        // showBadge={Number(leagueDetails?.playerCount) === Number(leagueDetails?.totalPlayers)}
+                        playerCount={response[0]?.registeredPlayerCount}
+                        showBadge
                     />}
                     insertable={false}
                     {...viewProps.players}

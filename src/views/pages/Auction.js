@@ -216,8 +216,8 @@ function Auction() {
                             setIsExploding={setIsExploding}
                         />
                     </>
-                ) : playerIds.length === 0 &&
-                    Number(leagueDetails.playerCount) === 0 ? (
+                ) : (playerIds.length === 0 &&
+                    Number(leagueDetails.playerCount) === 0) || (teams.length === 0 && Number(leagueDetails.teamCount) === 0) ? (
                     <div
                         style={{
                             display: "flex",

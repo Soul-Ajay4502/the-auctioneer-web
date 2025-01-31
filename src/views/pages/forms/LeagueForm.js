@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -8,10 +8,53 @@ import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
 import { Row, Col } from "react-bootstrap"; // Import Row and Col from React-Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported
 import "./LeagueForm.css"; // Import any additional CSS
+import trimObjectValues from "../../../helpers/trimObjectValues";
 
 function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
+    const [error, setError] = useState("");
+
+    function validateCommaSeparatedStrings(str1, str2) {
+        // Check for invalid spaces before/after commas or values
+        const hasInvalidSpaces = (str) => {
+            return /(^\s|\s$|\s,|,\s|[0-9]+\s+[0-9]+)/.test(str);
+        };
+
+        if (hasInvalidSpaces(str1) || hasInvalidSpaces(str2)) {
+            return {
+                isValid: false,
+                error: "Contains spaces in break points or increments, or invalid numbers with spaces.",
+            }; // Invalid due to spaces
+        }
+
+        // Split strings by commas and compare the lengths
+        const arr1 = str1.split(",");
+        const arr2 = str2.split(",");
+        if (Number(arr1[0]) !== 0) {
+            return {
+                isValid: false,
+                error: "Break points must start with 0",
+            };
+        }
+        return {
+            isValid: arr1.length === arr2.length,
+            error: "Count miss match in break Points and increments",
+        };
+    }
+
     const submitHandler = (values, { setSubmitting }) => {
-        const body = { ...values, leagueId: updateValues?.leagueId };
+        const trimmedValues = trimObjectValues(values);
+        const validateMissmatch = validateCommaSeparatedStrings(
+            trimmedValues.breakPoints,
+            trimmedValues.increments
+        );
+        const { isValid, error } = validateMissmatch;
+        if (!isValid) {
+            setError(error);
+            setSubmitting(false);
+            return;
+        }
+
+        const body = { ...trimmedValues, leagueId: updateValues?.leagueId };
         axios
             .post(endpoint, body)
             .then(() => {
@@ -45,6 +88,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
         createdBy: "",
         registrationEndDate: "",
         playerBasePrice: "",
+        minimumPlayerCount: "",
     };
 
     return (
@@ -74,11 +118,15 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                 registrationEndDate: Yup.date().required(
                     "Registration end date is required."
                 ),
+                minimumPlayerCount: Yup.date().required(
+                    "Minimum player count is required."
+                ),
             })}
             onSubmit={submitHandler}
         >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, values }) => (
                 <Form>
+                    {console.log("val", values)}
                     <Row>
                         <Col md={6}>
                             <FormikControl
@@ -215,6 +263,15 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                         </Col>
                     </Row>
                     <Row>
+                        <FormikControl
+                            control="input"
+                            required
+                            label="Minimun Players In A Team"
+                            name="minimumPlayerCount"
+                            type="number"
+                        />
+                    </Row>
+                    <Row>
                         <div
                             style={{
                                 textAlign: "center",
@@ -256,7 +313,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 border: "1px solid #f5c2c7",
                             }}
                         >
-                            Eg: Auction Break Points: 0, 500, 1000, 1500
+                            Eg: Auction Break Points: 0,500,1000,1500
                         </div>
 
                         <div
@@ -271,7 +328,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                                 border: "1px solid #f5c2c7",
                             }}
                         >
-                            Eg: Auction Increment Points: 50, 100, 250, 500
+                            Eg: Auction Increment Points: 50,100,250,500
                         </div>
 
                         <Col md={6}>
@@ -291,6 +348,9 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                             />
                         </Col>
                     </Row>
+                    <div style={{ color: "red", textAlign: "center" }}>
+                        {error}
+                    </div>
                     <Row>
                         <Col className="text-center">
                             <div className="form-actions">

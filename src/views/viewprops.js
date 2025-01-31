@@ -18,6 +18,7 @@ const viewProps = Object.freeze({
             "CREATED TEAMS",
             "BREAK POINTS",
             "INCREMENTS",
+            "minimum Player Count",
             "EDIT",
         ],
         relevants: [
@@ -37,6 +38,7 @@ const viewProps = Object.freeze({
             "teamCount",
             "breakPoints",
             "increments",
+            "minimumPlayerCount",
             "edit",
         ],
     },

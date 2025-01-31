@@ -25,7 +25,8 @@ const endpoints = Object.freeze({
         update: "/players/update",
         downloadUploadTemplate: '',
         upload: '/template/upload',
-        listByTeam: '/team/player/'
+        listByTeam: '/team/player/',
+        playerCount: '/players/playerCount/',
     },
     auction: {
         playerIds: '/players/playerIds/'

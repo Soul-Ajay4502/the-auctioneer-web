@@ -71,6 +71,7 @@ const cellModifier = {
                             alignItems: "center",
                             border: '1px solid grey',
                             height: '5vh',
+                            overflow: 'hidden'
                         }}
                     >
                         <Image

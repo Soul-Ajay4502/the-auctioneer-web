@@ -48,12 +48,9 @@ const SignUpForm = ({ handleClose }) => {
     };
 
     const handleSignUp = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         setLoading(true);
         try {
-            // Replace with your API call to verify OTP and create account
-            // const payload = { ...formData };
-            // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
             await axios.post(endpoints.authentication.register, formData);
             toast.success("Account created successfully!");
             handleClose();
@@ -82,7 +79,7 @@ const SignUpForm = ({ handleClose }) => {
                 borderBottomRightRadius: 10,
             }}
         >
-            <form onSubmit={handleSignUp} style={{ width: "90%" }}>
+            <form style={{ width: "90%" }}>
                 <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
                     GET ON BOARD
                 </h1>
@@ -301,7 +298,7 @@ const SignUpForm = ({ handleClose }) => {
                     </>
                 ) : (
                     <Button
-                        type="submit"
+                        onClick={handleSignUp}
                         style={{
                             width: "97%",
                             padding: "10px",

@@ -56,7 +56,7 @@ label {
   background: #55a4f2; /* Darker gray handle */
 }
 input:disabled {
-  background-color: #797b79; /* Light gray background */
+  background-color: #797b79 !important; /* Light gray background */
   color: #fff;  /* Change text color to indicate it's disabled */
   border: 1px solid #ccc; /* Border style */
   cursor: not-allowed; /* Change cursor to show it's not interactive */

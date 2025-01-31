@@ -15,16 +15,13 @@ function PlayerProfileModal({
     closeModal,
     teams,
     reFetch,
-    setIsExploding
+    setIsExploding,
 }) {
     const initialAmount = 5000;
     const { selectedLeague } = useLeagueState();
     const { leagueDetails } = selectedLeague;
-    const breakPointsArray = leagueDetails.breakPoints.split(',').map(Number);
-    const incrementsArray = leagueDetails.increments.split(',').map(Number);
-
-
-
+    const breakPointsArray = leagueDetails.breakPoints?.split(",")?.map(Number);
+    const incrementsArray = leagueDetails.increments?.split(",")?.map(Number);
 
     const lightColors = [
         "#f0e68c",
@@ -69,7 +66,9 @@ function PlayerProfileModal({
             teamColor: lightColors[index] || "#72ecf2",
         }))
     );
-    const [bidIncrement, setBidIncrement] = useState(Number(leagueDetails.player_base_price) || 100);
+    const [bidIncrement, setBidIncrement] = useState(
+        Number(leagueDetails.player_base_price) || 100
+    );
     const [currentBid, setCurrentBid] = useState({
         teamId: "",
         teamName: "",
@@ -81,23 +80,27 @@ function PlayerProfileModal({
     });
     const [playerValue, setPlayerValue] = useState(0);
 
-    const BREAK_POINTS_ARRAY = breakPointsArray.map((breakPoint, index) => ({
+    const BREAK_POINTS_ARRAY = breakPointsArray?.map((breakPoint, index) => ({
         breakPoint,
         increment: incrementsArray[index],
     }));
 
     useEffect(() => {
-        const match = BREAK_POINTS_ARRAY.find(({ breakPoint }, index, array) => {
-            const nextBreakPoint = array[index + 1]?.breakPoint || leagueDetails.bidAmountPerTeam;
-            return playerValue >= breakPoint && playerValue < nextBreakPoint;
-        });
+        const match = BREAK_POINTS_ARRAY?.find(
+            ({ breakPoint }, index, array) => {
+                const nextBreakPoint =
+                    array[index + 1]?.breakPoint ||
+                    leagueDetails.bidAmountPerTeam;
+                return (
+                    playerValue >= breakPoint && playerValue < nextBreakPoint
+                );
+            }
+        );
 
         if (match) {
             setBidIncrement(match.increment);
         }
     }, [playerValue]);
-
-
 
     const tagStyle = {
         display: "flex",
@@ -137,8 +140,8 @@ function PlayerProfileModal({
                 isReachedMaxAmountPerPlayer: false,
                 teamColor: lightColors[index] || "#72ecf2",
             }))
-        )
-    }
+        );
+    };
 
     const handleBidClick = (teamId, teamName, maxAmountPerPlayer) => {
         // const bidIncrement = 500; // Fixed bid increment
@@ -206,7 +209,7 @@ function PlayerProfileModal({
                 `${playerDetails?.playerName} Sold to ${currentBid?.teamName}`
             );
             clearStates();
-            setIsExploding(true)
+            setIsExploding(true);
             reFetch();
         } catch (err) { }
     };
@@ -246,7 +249,7 @@ function PlayerProfileModal({
                 onHide={() => {
                     onHiding();
                     closeModal();
-                    clearStates()
+                    clearStates();
                 }}
                 backdrop="static"
                 scrollable={true}
@@ -261,44 +264,51 @@ function PlayerProfileModal({
                         alignItems: "center",
                     }}
                 >
-                    <div
-                        style={{
-                            borderRadius: 50,
-                            fontSize: "1.5rem",
-                            fontWeight: "bold",
-                            color: "#000",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.5px",
-                            background: "#fff",
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-                            width: "4%",
-                            marginRight: 10,
-                            textAlign: "center",
-                            padding: '10px 0'
-                        }}
-                    >
-                        {playerDetails?.playerId}
-                    </div>
-                    <div
-                        className="m-0 h5 pe-2"
-                        style={{
-                            borderRadius: 10,
-                            padding: "10px",
-                            fontSize: "1.5rem",
-                            fontWeight: "bold",
-                            color: "#000",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.5px",
-                            background: "#fff",
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-                            width: "20%",
-                        }}
-                    >
-                        {playerDetails?.playerName}
-                    </div>
+                    {BREAK_POINTS_ARRAY?.length > 0 && (
+                        <>
+                            <div
+                                style={{
+                                    borderRadius: 50,
+                                    fontSize: "1.5rem",
+                                    fontWeight: "bold",
+                                    color: "#000",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.5px",
+                                    background: "#fff",
+                                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+                                    width: "4%",
+                                    marginRight: 10,
+                                    textAlign: "center",
+                                    padding: "10px 0",
+                                }}
+                            >
+                                {playerDetails?.playerId}
+                            </div>
+                            <div
+                                className="m-0 h5 pe-2"
+                                style={{
+                                    borderRadius: 10,
+                                    padding: "10px",
+                                    fontSize: "1.5rem",
+                                    fontWeight: "bold",
+                                    color: "#000",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.5px",
+                                    background: "#fff",
+                                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+                                    width: "20%",
+                                }}
+                            >
+                                {playerDetails?.playerName}
+                            </div>
+                        </>
+                    )}
 
                     <CloseButton
-                        onClick={() => { closeModal(); clearStates() }}
+                        onClick={() => {
+                            closeModal();
+                            clearStates();
+                        }}
                         style={{
                             position: "absolute",
                             top: "10px",
@@ -313,232 +323,259 @@ function PlayerProfileModal({
                     className="p-3 p-md-4"
                     style={{ overflow: "hidden" }}
                 >
-                    <div
-                        style={{
-                            display: "flex",
-                            overflow: "hidden",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        {/* Player Image */}
-                        <div
-                            style={{
-                                overflow: "hidden",
-                                width: "30%",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <img
-                                src={playerDetails?.playerPhoto}
-                                alt="player dp"
-                                style={{
-                                    height: "550px",
-                                    borderTopLeftRadius: borderRadius,
-                                    borderBottomLeftRadius: borderRadius,
-                                    borderLeft: borderProperty,
-                                    borderTop: borderProperty,
-                                    borderBottom: borderProperty,
-                                    width: "100%",
-                                }}
-                            />
-                        </div>
-
-                        <div
-                            style={{
-                                width: "20%",
-                                display: "flex",
-                                // flexWrap: "wrap",
-                                flexDirection: "column",
-                                gap: "8px",
-                                borderTop: borderProperty,
-                                borderRight: borderProperty,
-                                borderBottom: borderProperty,
-                                padding: 10,
-                                borderTopRightRadius: borderRadius,
-                                borderBottomRightRadius: borderRadius,
-                            }}
-                        >
-                            <span
-                                style={{
-                                    justifyContent: "center",
-                                    ...tagStyle,
-                                    background: `linear-gradient(90deg, rgba(0,6,36,1) 0%, rgba(75,9,121,1) 0%, rgba(209,0,255,1) 75%)`,
-                                }}
-                            >
-                                {playerDetails?.playerRole?.toUpperCase()}
-                            </span>
-                            <span
-                                style={{
-                                    ...tagStyle,
-                                    justifyContent: "space-between",
-                                    background: `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 19%, rgba(0,212,255,1) 100%)`,
-                                }}
-                            >
-                                <img
-                                    src={bat}
-                                    alt="cricket-bat"
-                                    width={80}
-                                    style={{
-                                        background: "#fff",
-                                        borderRadius: 10,
-                                        padding: 5,
-                                        boxShadow:
-                                            "0 1px 3px rgba(0, 0, 0, 0.2)",
-                                    }}
-                                />{" "}
-                                <span
-                                    style={{
-                                        paddingLeft: 5,
-                                        textAlign: "left",
-                                        width: "70%",
-                                    }}
-                                >
-                                    {playerDetails?.battingStyle?.toUpperCase()}
-                                </span>
-                            </span>
-                            <span
-                                style={{
-                                    ...tagStyle,
-                                    justifyContent: "space-between",
-                                    background: `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 19%, rgba(0,212,255,1) 100%)`,
-                                }}
-                            >
-                                <img
-                                    src={bowl}
-                                    alt="cricket-bowl"
-                                    width={80}
-                                    style={{
-                                        background: "#fff",
-                                        borderRadius: 10,
-                                        padding: 5,
-                                        boxShadow:
-                                            "0 1px 3px rgba(0, 0, 0, 0.2)",
-                                    }}
-                                />{" "}
-                                <span
-                                    style={{
-                                        paddingLeft: 5,
-                                        textAlign: "left",
-                                        width: "70%",
-                                    }}
-                                >
-                                    {playerDetails?.bowlingStyle?.toUpperCase()}
-                                </span>
-                            </span>
-                        </div>
-
-                        {/* Team List */}
-                        <div
-                            style={{
-                                width: "50%",
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                flexDirection: "column",
-                            }}
-                        >
-                            {/* <h5 className="mb-3">Teams</h5> */}
-                            <div>
-                                <h6>Bid Increment</h6>
-                                <div>
-                                    <input
-                                        type="number"
-                                        onChange={(e) =>
-                                            setBidIncrement(
-                                                Number(e.target.value)
-                                            )
-                                        }
-                                        value={bidIncrement}
-                                        style={{ borderRadius: 50 }}
-                                    />
-                                </div>
-                            </div>
+                    <>
+                        {BREAK_POINTS_ARRAY?.length > 0 ? (
                             <div
                                 style={{
-                                    width: "65%",
                                     display: "flex",
-                                    alignItems: "flex-start",
+                                    overflow: "hidden",
                                     justifyContent: "space-between",
-                                    flexWrap: "wrap", // Allow buttons to wrap to the next line
-                                    gap: "10px", // Add spacing between buttons
                                 }}
                             >
-                                {teamBalances.map((team) => (
-                                    <Button
-                                        key={team.teamId}
-                                        style={{
-                                            width: "23%", // Ensures 4 buttons fit in a row (accounting for spacing)
-                                            fontWeight: "bold",
-                                            marginBottom: "10px", // Adds spacing between rows
-                                            background: team.teamColor,
-                                            color: "#000",
-                                        }}
-                                        size="sm"
-                                        onClick={() =>
-                                            handleBidClick(
-                                                team.teamId,
-                                                team.teamName,
-                                                Number(team.maxAmountPerPlayer)
-                                            )
-                                        }
-                                        disabled={
-                                            team.isReachedMaxAmountPerPlayer
-                                        }
-                                    >
-                                        {team.teamName}
-                                    </Button>
-                                ))}
-                            </div>
-                            {/* Current Bid Section */}
-                            <div style={{ textAlign: "center" }}>
-                                <p style={{ fontSize: 33, fontWeight: 700 }}>
-                                    <strong>{currentBid?.teamName}</strong>
-                                </p>
+                                {/* Player Image */}
                                 <div
                                     style={{
-                                        padding: "40px 25px",
-                                        border: "1px solid #000",
-                                        // borderRadius: "50%",
-                                        background: "#e9ecef",
-                                        width: '100%'
+                                        overflow: "hidden",
+                                        width: "30%",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
                                     }}
                                 >
-                                    <strong>
-                                        <Rupee />
-                                        {playerValue}
-                                    </strong>
+                                    <img
+                                        src={playerDetails?.playerPhoto}
+                                        alt="player dp"
+                                        style={{
+                                            height: "550px",
+                                            borderTopLeftRadius: borderRadius,
+                                            borderBottomLeftRadius:
+                                                borderRadius,
+                                            borderLeft: borderProperty,
+                                            borderTop: borderProperty,
+                                            borderBottom: borderProperty,
+                                            width: "100%",
+                                        }}
+                                    />
+                                </div>
+
+                                <div
+                                    style={{
+                                        width: "20%",
+                                        display: "flex",
+                                        // flexWrap: "wrap",
+                                        flexDirection: "column",
+                                        gap: "8px",
+                                        borderTop: borderProperty,
+                                        borderRight: borderProperty,
+                                        borderBottom: borderProperty,
+                                        padding: 10,
+                                        borderTopRightRadius: borderRadius,
+                                        borderBottomRightRadius: borderRadius,
+                                    }}
+                                >
+                                    <span
+                                        style={{
+                                            justifyContent: "center",
+                                            ...tagStyle,
+                                            background: `linear-gradient(90deg, rgba(0,6,36,1) 0%, rgba(75,9,121,1) 0%, rgba(209,0,255,1) 75%)`,
+                                        }}
+                                    >
+                                        {playerDetails?.playerRole?.toUpperCase()}
+                                    </span>
+                                    <span
+                                        style={{
+                                            ...tagStyle,
+                                            justifyContent: "space-between",
+                                            background: `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 19%, rgba(0,212,255,1) 100%)`,
+                                        }}
+                                    >
+                                        <img
+                                            src={bat}
+                                            alt="cricket-bat"
+                                            width={80}
+                                            style={{
+                                                background: "#fff",
+                                                borderRadius: 10,
+                                                padding: 5,
+                                                boxShadow:
+                                                    "0 1px 3px rgba(0, 0, 0, 0.2)",
+                                            }}
+                                        />{" "}
+                                        <span
+                                            style={{
+                                                paddingLeft: 5,
+                                                textAlign: "left",
+                                                width: "70%",
+                                            }}
+                                        >
+                                            {playerDetails?.battingStyle?.toUpperCase()}
+                                        </span>
+                                    </span>
+                                    <span
+                                        style={{
+                                            ...tagStyle,
+                                            justifyContent: "space-between",
+                                            background: `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 19%, rgba(0,212,255,1) 100%)`,
+                                        }}
+                                    >
+                                        <img
+                                            src={bowl}
+                                            alt="cricket-bowl"
+                                            width={80}
+                                            style={{
+                                                background: "#fff",
+                                                borderRadius: 10,
+                                                padding: 5,
+                                                boxShadow:
+                                                    "0 1px 3px rgba(0, 0, 0, 0.2)",
+                                            }}
+                                        />{" "}
+                                        <span
+                                            style={{
+                                                paddingLeft: 5,
+                                                textAlign: "left",
+                                                width: "70%",
+                                            }}
+                                        >
+                                            {playerDetails?.bowlingStyle?.toUpperCase()}
+                                        </span>
+                                    </span>
+                                </div>
+
+                                {/* Team List */}
+                                <div
+                                    style={{
+                                        width: "50%",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                    }}
+                                >
+                                    {/* <h5 className="mb-3">Teams</h5> */}
+                                    <div>
+                                        <h6>Bid Increment</h6>
+                                        <div>
+                                            <input
+                                                type="number"
+                                                onChange={(e) =>
+                                                    setBidIncrement(
+                                                        Number(e.target.value)
+                                                    )
+                                                }
+                                                value={bidIncrement}
+                                                style={{ borderRadius: 50 }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: "65%",
+                                            display: "flex",
+                                            alignItems: "flex-start",
+                                            justifyContent: "space-between",
+                                            flexWrap: "wrap", // Allow buttons to wrap to the next line
+                                            gap: "10px", // Add spacing between buttons
+                                        }}
+                                    >
+                                        {teamBalances.map((team) => (
+                                            <Button
+                                                key={team.teamId}
+                                                style={{
+                                                    width: "23%", // Ensures 4 buttons fit in a row (accounting for spacing)
+                                                    fontWeight: "bold",
+                                                    marginBottom: "10px", // Adds spacing between rows
+                                                    background: team.teamColor,
+                                                    color: "#000",
+                                                }}
+                                                size="sm"
+                                                onClick={() =>
+                                                    handleBidClick(
+                                                        team.teamId,
+                                                        team.teamName,
+                                                        Number(
+                                                            team.maxAmountPerPlayer
+                                                        )
+                                                    )
+                                                }
+                                                disabled={
+                                                    team.isReachedMaxAmountPerPlayer
+                                                }
+                                            >
+                                                {team.teamName}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                    {/* Current Bid Section */}
+                                    <div style={{ textAlign: "center" }}>
+                                        <p
+                                            style={{
+                                                fontSize: 33,
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            <strong>
+                                                {currentBid?.teamName}
+                                            </strong>
+                                        </p>
+                                        <div
+                                            style={{
+                                                padding: "40px 25px",
+                                                border: "1px solid #000",
+                                                // borderRadius: "50%",
+                                                background: "#e9ecef",
+                                                width: "100%",
+                                            }}
+                                        >
+                                            <strong>
+                                                <Rupee />
+                                                {playerValue}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div style={{ width: "80%" }}>
+                                        <Button
+                                            onClick={handleSell}
+                                            disabled={playerValue <= 0}
+                                            style={{
+                                                width: "50%",
+                                                borderTopRightRadius: 0,
+                                                borderBottomRightRadius: 0,
+                                            }}
+                                            variant="success"
+                                        >
+                                            SOLD
+                                        </Button>
+                                        <Button
+                                            onClick={handleUnsold}
+                                            disabled={playerValue > 0}
+                                            style={{
+                                                width: "50%",
+                                                borderTopLeftRadius: 0,
+                                                borderBottomLeftRadius: 0,
+                                            }}
+                                            variant="danger"
+                                        >
+                                            UNSOLD
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
-                            <div style={{ width: "80%" }}>
-                                <Button
-                                    onClick={handleSell}
-                                    disabled={playerValue <= 0}
-                                    style={{
-                                        width: "50%",
-                                        borderTopRightRadius: 0,
-                                        borderBottomRightRadius: 0,
-                                    }}
-                                    variant="success"
-                                >
-                                    SOLD
-                                </Button>
-                                <Button
-                                    onClick={handleUnsold}
-                                    disabled={playerValue > 0}
-                                    style={{
-                                        width: "50%",
-                                        borderTopLeftRadius: 0,
-                                        borderBottomLeftRadius: 0,
-                                    }}
-                                    variant="danger"
-                                >
-                                    UNSOLD
-                                </Button>
+                        ) : (
+                            <div
+                                style={{
+                                    height: "70vh",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    color: "red",
+                                }}
+                            >
+                                Break points and increments are not added in the
+                                League.Please Update the league details
                             </div>
-                        </div>
-                    </div>
+                        )}
+                    </>
                 </Modal.Body>
             </Modal>
         </>

@@ -9,7 +9,7 @@ const LeftScreen = () => {
                 position: "relative",
             }}
         >
-            <div
+            {/* <div
                 style={{
                     position: "absolute",
                     top: "28%",
@@ -33,10 +33,11 @@ const LeftScreen = () => {
                     talent. Shape your ultimate team, track live auctions, and
                     experience cricket like never before.
                 </div>
-            </div>
+            </div> */}
             <img
                 src={leftImage}
                 width={"100%"}
+                alt="login left screen"
                 style={{
                     borderTopLeftRadius: 10,
                     borderBottomLeftRadius: 10,
