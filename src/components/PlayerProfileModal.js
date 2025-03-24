@@ -78,7 +78,7 @@ function PlayerProfileModal({
         teamName: "",
         playerValue: 0,
     });
-    const [playerValue, setPlayerValue] = useState(0);
+    const [playerValue, setPlayerValue] = useState(Number(leagueDetails.player_base_price) || 100);
 
     const BREAK_POINTS_ARRAY = breakPointsArray?.map((breakPoint, index) => ({
         breakPoint,
@@ -132,7 +132,7 @@ function PlayerProfileModal({
             playerValue: 0,
         });
         setBidIncrement(100);
-        setPlayerValue(0);
+        setPlayerValue(Number(leagueDetails.player_base_price) || 100);
         setTeamBalances(
             teams.map((team, index) => ({
                 ...team,

@@ -89,6 +89,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
         registrationEndDate: "",
         playerBasePrice: "",
         minimumPlayerCount: "",
+        bidAmountPerTeam: "",
     };
 
     return (
@@ -269,6 +270,7 @@ function LeagueForm({ endpoint, onCancel, onAfterSubmit, updateValues }) {
                             label="Minimun Players In A Team"
                             name="minimumPlayerCount"
                             type="number"
+                            disabled={updateValues}
                         />
                     </Row>
                     <Row>
